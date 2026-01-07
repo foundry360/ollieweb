@@ -52,18 +52,26 @@ export async function POST(request: NextRequest) {
     }
 
     // Update application status
+    // Note: reviewed_by might have a foreign key constraint
+    // If admin.id doesn't exist in users table, we'll set it to null
     const updateData: any = {
       status: 'approved',
       reviewed_at: new Date().toISOString(),
     }
 
-    // Try to set reviewed_by - use admin.id from auth
-    // If reviewed_by column has constraints, this might fail, but we'll try
-    try {
-      updateData.reviewed_by = admin.id
-    } catch (e) {
-      console.warn('Could not set reviewed_by:', e)
-      // Continue without reviewed_by if it causes issues
+    // Check if admin exists in users table before setting reviewed_by
+    const { data: adminUser } = await adminClient
+      .from('users')
+      .select('id')
+      .eq('id', admin.id)
+      .single()
+
+    if (adminUser && adminUser.id) {
+      updateData.reviewed_by = adminUser.id
+    } else {
+      // If admin doesn't exist in users table, leave reviewed_by as null
+      // This avoids foreign key constraint violations
+      console.warn('Admin user not found in users table, leaving reviewed_by as null')
     }
 
     console.log('Updating application with data:', updateData)
