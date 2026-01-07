@@ -55,13 +55,28 @@ export function NeighborApprovalsTable({ applications: initialApplications }: Ne
         body: JSON.stringify({ applicationId }),
       })
 
-      const data = await response.json()
+      let data
+      try {
+        data = await response.json()
+      } catch (jsonError) {
+        const text = await response.text()
+        console.error('Failed to parse JSON response:', text)
+        throw new Error(`Server error: ${response.status} ${response.statusText}`)
+      }
 
       if (!response.ok) {
         const errorMessage = data.details 
           ? `${data.error}: ${data.details}`
-          : data.error || 'Failed to approve'
-        console.error('Approval error:', data)
+          : data.error || `Failed to approve (${response.status})`
+        console.error('Approval error response:', data)
+        console.error('Full error details:', {
+          status: response.status,
+          statusText: response.statusText,
+          error: data.error,
+          details: data.details,
+          code: data.code,
+          hint: data.hint
+        })
         throw new Error(errorMessage)
       }
 
