@@ -34,9 +34,12 @@ A Next.js 14+ admin portal for managing the Ollie platform, built with TypeScrip
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
    SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+   OFFENDERS_IO_API_KEY=your_offenders_io_api_key
    ```
 
-   **Important**: The service role key is used server-side only for admin operations that bypass RLS. Never expose it client-side.
+   **Important**: 
+   - The service role key is used server-side only for admin operations that bypass RLS. Never expose it client-side.
+   - The Offenders.io API key is used for neighbor verification. Get your API key from [Offenders.io](https://offenders.io).
 
 3. **Run the development server**:
    ```bash
