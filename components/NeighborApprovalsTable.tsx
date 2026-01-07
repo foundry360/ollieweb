@@ -4,9 +4,10 @@ import { useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { format } from 'date-fns'
-import { CheckCircle, XCircle, Phone, Mail, MapPin, Calendar, MoreVertical, Check, Circle, ChevronLeft, ChevronRight } from 'lucide-react'
+import { CheckCircle, XCircle, Phone, Mail, MapPin, Calendar, MoreVertical, Check, Circle, ChevronLeft, ChevronRight, Shield } from 'lucide-react'
 import { PendingNeighborApplication } from '@/lib/types/database'
 import { ApproveRejectModal } from './ApproveRejectModal'
+import { NeighborVerificationModal } from './NeighborVerificationModal'
 
 interface NeighborApprovalsTableProps {
   applications: PendingNeighborApplication[]
@@ -14,6 +15,7 @@ interface NeighborApprovalsTableProps {
 
 export function NeighborApprovalsTable({ applications: initialApplications }: NeighborApprovalsTableProps) {
   const [selectedApplication, setSelectedApplication] = useState<PendingNeighborApplication | null>(null)
+  const [verificationApplication, setVerificationApplication] = useState<PendingNeighborApplication | null>(null)
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all')
   const [search, setSearch] = useState('')
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
@@ -261,9 +263,19 @@ export function NeighborApprovalsTable({ applications: initialApplications }: Ne
                             className="fixed inset-0 z-10"
                             onClick={() => setOpenDropdown(null)}
                           />
-                          <div className="absolute right-0 mt-1 w-40 bg-white rounded-md shadow-lg z-20 border border-gray-200">
+                          <div className="absolute right-0 mt-1 w-48 bg-white rounded-md shadow-lg z-20 border border-gray-200">
                             {app.status === 'pending' ? (
                               <>
+                                <button
+                                  onClick={() => {
+                                    setVerificationApplication(app)
+                                    setOpenDropdown(null)
+                                  }}
+                                  className="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-100 flex items-center"
+                                >
+                                  <Shield className="w-3 h-3 mr-2 text-blue-600" />
+                                  Verify
+                                </button>
                                 <button
                                   onClick={() => {
                                     handleApprove(app.id)
@@ -366,6 +378,17 @@ export function NeighborApprovalsTable({ applications: initialApplications }: Ne
           onReject={(reason) => {
             handleReject(selectedApplication.id, reason)
             setSelectedApplication(null)
+          }}
+        />
+      )}
+
+      {verificationApplication && (
+        <NeighborVerificationModal
+          application={verificationApplication}
+          onClose={() => setVerificationApplication(null)}
+          onVerified={() => {
+            // Refresh the page to show updated verification status
+            window.location.reload()
           }}
         />
       )}
