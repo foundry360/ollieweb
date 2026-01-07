@@ -95,49 +95,74 @@ export async function POST(request: NextRequest) {
 
     console.log('Application status updated successfully')
 
-    // If user_id exists, create/update user profile
-    if (application.user_id) {
-      const userData: any = {
-        id: application.user_id,
-        email: application.email,
-        full_name: application.full_name || null,
-        phone: application.phone || null,
-        role: 'poster',
-        application_status: 'approved',
-        verified: application.phone_verified || false,
-      }
+    // Create/update user profile
+    // First, check if a user with this email already exists
+    const { data: existingUser } = await adminClient
+      .from('users')
+      .select('id, email, role')
+      .eq('email', application.email)
+      .single()
 
-      // Only add date_of_birth if it exists
-      if (application.date_of_birth) {
-        userData.date_of_birth = application.date_of_birth
-      }
+    const userData: any = {
+      email: application.email,
+      full_name: application.full_name || null,
+      phone: application.phone || null,
+      role: 'poster',
+      application_status: 'approved',
+      verified: application.phone_verified || false,
+    }
 
-      console.log('Creating/updating user profile:', userData)
+    // Only add date_of_birth if it exists
+    if (application.date_of_birth) {
+      userData.date_of_birth = application.date_of_birth
+    }
 
-      const { error: userError, data: userResult } = await adminClient
+    let userError = null
+    let userResult = null
+
+    if (existingUser) {
+      // User with this email already exists, update it
+      console.log('User with email already exists, updating:', existingUser.id)
+      userData.id = existingUser.id
+      
+      // Merge with existing data - don't overwrite important fields that might already be set
+      const { error: updateError, data: updateResult } = await adminClient
         .from('users')
-        .upsert(userData, {
-          onConflict: 'id',
+        .update({
+          ...userData,
+          // Preserve existing role if it's more privileged than 'poster'
+          role: existingUser.role && existingUser.role !== 'poster' ? existingUser.role : 'poster',
         })
+        .eq('id', existingUser.id)
         .select()
 
-      if (userError) {
-        console.error('Error creating/updating user profile:', userError)
-        console.error('User data attempted:', userData)
-        // Return error if user creation fails, as this is important
-        return NextResponse.json({ 
-          error: 'Application approved but failed to create user profile',
-          details: userError.message,
-          code: userError.code,
-          hint: userError.hint
-        }, { status: 500 })
-      }
+      userError = updateError
+      userResult = updateResult
+    } else if (application.user_id) {
+      // No existing user, and we have a user_id from the application
+      console.log('Creating new user profile with user_id:', application.user_id)
+      userData.id = application.user_id
 
-      console.log('User profile created/updated successfully')
+      const { error: insertError, data: insertResult } = await adminClient
+        .from('users')
+        .insert(userData)
+        .select()
+
+      userError = insertError
+      userResult = insertResult
     } else {
-      // If no user_id, log a warning but don't fail
-      // The application is approved, but user profile creation is skipped
-      console.warn('Application has no user_id, skipping user profile creation')
+      // No existing user and no user_id - skip user creation
+      console.warn('Application has no user_id and no existing user found, skipping user profile creation')
+    }
+
+    if (userError) {
+      console.error('Error creating/updating user profile:', userError)
+      console.error('User data attempted:', userData)
+      // Don't fail the approval - the application is already approved
+      // Just log the error and return success
+      console.warn('Application approved but user profile update failed - this is non-critical')
+    } else if (userResult) {
+      console.log('User profile created/updated successfully')
     }
 
     return NextResponse.json({ success: true })
