@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
     // First, check if a user with this email already exists
     const { data: existingUser } = await adminClient
       .from('users')
-      .select('id, email')
+      .select('id, email, role')
       .eq('email', application.email)
       .single()
 
