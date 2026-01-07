@@ -264,18 +264,20 @@ export function NeighborApprovalsTable({ applications: initialApplications }: Ne
                             onClick={() => setOpenDropdown(null)}
                           />
                           <div className="absolute right-0 mt-1 w-48 bg-white rounded-md shadow-lg z-20 border border-gray-200">
+                            {/* View Verification - available for all applications */}
+                            <button
+                              onClick={() => {
+                                setVerificationApplication(app)
+                                setOpenDropdown(null)
+                              }}
+                              className="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-100 flex items-center border-b border-gray-200"
+                            >
+                              <Shield className="w-3 h-3 mr-2 text-blue-600" />
+                              View Verification
+                            </button>
+                            
                             {app.status === 'pending' ? (
                               <>
-                                <button
-                                  onClick={() => {
-                                    setVerificationApplication(app)
-                                    setOpenDropdown(null)
-                                  }}
-                                  className="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-100 flex items-center"
-                                >
-                                  <Shield className="w-3 h-3 mr-2 text-blue-600" />
-                                  Verify
-                                </button>
                                 <button
                                   onClick={() => {
                                     handleApprove(app.id)

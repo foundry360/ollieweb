@@ -117,6 +117,23 @@ export function NeighborVerificationModal({ application, onClose, onVerified }: 
                   <span className="text-gray-500">Phone:</span>
                   <span className="ml-2 font-medium">{application.phone}</span>
                 </div>
+                <div className="col-span-2">
+                  <span className="text-gray-500">Verification Status:</span>
+                  <span className={`ml-2 font-medium flex items-center ${
+                    application.phone_verified ? 'text-green-600' : 'text-gray-600'
+                  }`}>
+                    {application.phone_verified ? (
+                      <>
+                        <CheckCircle className="w-4 h-4 mr-1" />
+                        Verified {application.phone_verified_at 
+                          ? `on ${new Date(application.phone_verified_at).toLocaleDateString()}`
+                          : ''}
+                      </>
+                    ) : (
+                      'Not verified'
+                    )}
+                  </span>
+                </div>
               </div>
             </div>
 
