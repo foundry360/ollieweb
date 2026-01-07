@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import { SidebarNav } from './SidebarNav'
@@ -37,9 +38,11 @@ export function MobileSidebar() {
                 <div className="fixed inset-y-0 left-0 z-50 w-64 shadow-lg transform transition-transform duration-300 ease-in-out lg:hidden" style={{ backgroundColor: '#111827' }}>
             <div className="flex flex-col h-full">
               <div className="flex items-center justify-center h-20 px-6 border-b border-gray-700" style={{ backgroundColor: '#111827' }}>
-                <img
+                <Image
                   src="/header-logo.png"
                   alt="Ollie Admin"
+                  width={56}
+                  height={56}
                   className="h-14 w-auto object-contain"
                 />
                 <button
