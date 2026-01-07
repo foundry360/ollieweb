@@ -68,6 +68,36 @@ export function NeighborVerificationModal({ application, onClose, onVerified }: 
   const firstName = nameParts[0] || ''
   const lastName = nameParts.slice(1).join(' ') || ''
 
+  // Parse address into street address and city/state/zip
+  const parseAddress = (address: string | null) => {
+    if (!address) return { street: null, cityStateZip: null }
+    
+    // Try to split by comma - common format: "Street, City, State Zip"
+    const parts = address.split(',').map(p => p.trim())
+    
+    if (parts.length >= 2) {
+      // Street address is the first part
+      const street = parts[0]
+      // City, State Zip is the rest
+      const cityStateZip = parts.slice(1).join(', ')
+      return { street, cityStateZip }
+    }
+    
+    // If no comma, try to split by newline
+    if (address.includes('\n')) {
+      const lines = address.split('\n').map(p => p.trim())
+      return {
+        street: lines[0] || null,
+        cityStateZip: lines.slice(1).join(', ') || null
+      }
+    }
+    
+    // If we can't parse it, show the whole address as street
+    return { street: address, cityStateZip: null }
+  }
+
+  const { street, cityStateZip } = parseAddress(application.address)
+
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
@@ -109,9 +139,18 @@ export function NeighborVerificationModal({ application, onClose, onVerified }: 
                       : 'Not provided'}
                   </span>
                 </div>
-                <div>
+                <div className="col-span-2">
                   <span className="text-gray-500">Address:</span>
-                  <span className="ml-2 font-medium text-gray-900">{application.address || 'Not provided'}</span>
+                  {application.address ? (
+                    <div className="ml-2 mt-1">
+                      <div className="font-medium text-gray-900">{street}</div>
+                      {cityStateZip && (
+                        <div className="font-medium text-gray-900">{cityStateZip}</div>
+                      )}
+                    </div>
+                  ) : (
+                    <span className="ml-2 font-medium text-gray-900">Not provided</span>
+                  )}
                 </div>
                 <div>
                   <span className="text-gray-500">Phone:</span>
