@@ -19,6 +19,7 @@ export function NeighborApprovalsTable({ applications: initialApplications }: Ne
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all')
   const [search, setSearch] = useState('')
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+  const [dropdownPosition, setDropdownPosition] = useState<{ top: number; right: number } | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [recordsPerPage, setRecordsPerPage] = useState(25)
   const queryClient = useQueryClient()
@@ -249,26 +250,49 @@ export function NeighborApprovalsTable({ applications: initialApplications }: Ne
                       {format(new Date(app.created_at), 'MMM d, yyyy')}
                     </div>
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-xs font-medium relative">
+                  <td className="px-4 py-3 whitespace-nowrap text-xs font-medium">
                     <div className="relative">
                       <button
-                        onClick={() => setOpenDropdown(openDropdown === app.id ? null : app.id)}
+                        onClick={(e) => {
+                          if (openDropdown === app.id) {
+                            setOpenDropdown(null)
+                            setDropdownPosition(null)
+                          } else {
+                            const button = e.currentTarget
+                            const rect = button.getBoundingClientRect()
+                            setDropdownPosition({
+                              top: rect.bottom + 4,
+                              right: window.innerWidth - rect.right,
+                            })
+                            setOpenDropdown(app.id)
+                          }
+                        }}
                         className="p-1 text-gray-400 hover:text-gray-600 focus:outline-none"
                       >
                         <MoreVertical className="w-4 h-4" />
                       </button>
-                      {openDropdown === app.id && (
+                      {openDropdown === app.id && dropdownPosition && (
                         <>
                           <div
-                            className="fixed inset-0 z-10"
-                            onClick={() => setOpenDropdown(null)}
+                            className="fixed inset-0 z-40"
+                            onClick={() => {
+                              setOpenDropdown(null)
+                              setDropdownPosition(null)
+                            }}
                           />
-                          <div className="absolute right-0 mt-1 w-48 bg-white rounded-md shadow-lg z-20 border border-gray-200">
+                          <div 
+                            className="fixed w-48 bg-white rounded-md shadow-lg z-50 border border-gray-200"
+                            style={{
+                              top: `${dropdownPosition.top}px`,
+                              right: `${dropdownPosition.right}px`,
+                            }}
+                          >
                             {/* View Verification - available for all applications */}
                             <button
                               onClick={() => {
                                 setVerificationApplication(app)
                                 setOpenDropdown(null)
+                                setDropdownPosition(null)
                               }}
                               className="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-100 flex items-center border-b border-gray-200"
                             >
@@ -282,6 +306,7 @@ export function NeighborApprovalsTable({ applications: initialApplications }: Ne
                                   onClick={() => {
                                     handleApprove(app.id)
                                     setOpenDropdown(null)
+                                    setDropdownPosition(null)
                                   }}
                                   className="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-100 flex items-center"
                                 >
@@ -292,6 +317,7 @@ export function NeighborApprovalsTable({ applications: initialApplications }: Ne
                                   onClick={() => {
                                     setSelectedApplication(app)
                                     setOpenDropdown(null)
+                                    setDropdownPosition(null)
                                   }}
                                   className="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-100 flex items-center"
                                 >
