@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import toast from 'react-hot-toast'
 
@@ -68,9 +69,11 @@ export default function LoginPage() {
       <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-md">
         <div>
           <div className="flex justify-center mb-6">
-            <img
+            <Image
               src="/logo_dk.png"
               alt="Ollie Logo"
+              width={64}
+              height={64}
               className="h-16 w-auto object-contain"
             />
           </div>
