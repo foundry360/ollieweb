@@ -139,6 +139,10 @@ export function NeighborVerificationModal({ application, onClose, onVerified }: 
                       : 'Not provided'}
                   </span>
                 </div>
+                <div>
+                  <span className="text-gray-500">Phone:</span>
+                  <span className="ml-2 font-medium text-gray-900">{application.phone}</span>
+                </div>
                 <div className="col-span-2">
                   <span className="text-gray-500">Address:</span>
                   {application.address ? (
@@ -151,10 +155,6 @@ export function NeighborVerificationModal({ application, onClose, onVerified }: 
                   ) : (
                     <span className="ml-2 font-medium text-gray-900">Not provided</span>
                   )}
-                </div>
-                <div>
-                  <span className="text-gray-500">Phone:</span>
-                  <span className="ml-2 font-medium text-gray-900">{application.phone}</span>
                 </div>
                 <div className="col-span-2">
                   <span className="text-gray-500">Verification Status:</span>
