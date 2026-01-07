@@ -236,7 +236,7 @@ export function NeighborApprovalsTable({ applications: initialApplications }: Ne
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap">
                     {app.phone_verified ? (
-                      <span className="flex items-center gap-1 text-xs text-green-600">
+                      <span className="flex items-center gap-1 text-xs text-primary">
                         <Shield className="w-3 h-3" />
                         Verified
                       </span>
@@ -295,7 +295,7 @@ export function NeighborApprovalsTable({ applications: initialApplications }: Ne
                               }}
                               className="w-full text-left px-4 py-2 text-xs text-gray-700 hover:bg-gray-100 flex items-center border-b border-gray-200"
                             >
-                              <Shield className="w-3 h-3 mr-2 text-blue-600" />
+                              <Shield className="w-3 h-3 mr-2 text-primary" />
                               View Verification
                             </button>
                             

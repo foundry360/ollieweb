@@ -163,11 +163,11 @@ export function NeighborVerificationModal({ application, onClose, onVerified }: 
                   <div className="mt-3">
                     <span className="text-gray-500">Verification Status:</span>
                     <span className={`ml-2 font-medium inline-flex items-center ${
-                      application.phone_verified ? 'text-green-600' : 'text-gray-900'
+                      application.phone_verified ? 'text-primary' : 'text-gray-900'
                     }`}>
                       {application.phone_verified ? (
                         <>
-                          <CheckCircle className="w-4 h-4 mr-1" />
+                          <CheckCircle className="w-4 h-4 mr-1 text-primary" />
                           Verified {application.phone_verified_at 
                             ? `on ${new Date(application.phone_verified_at).toLocaleDateString()}`
                             : ''}
@@ -190,12 +190,12 @@ export function NeighborVerificationModal({ application, onClose, onVerified }: 
               }`}>
                 <div className="flex items-center mb-3">
                   {verificationResult.verified ? (
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
+                    <CheckCircle className="h-5 w-5 text-primary mr-2" />
                   ) : (
                     <AlertCircle className="h-5 w-5 text-red-600 mr-2" />
                   )}
                   <h4 className={`text-sm font-medium ${
-                    verificationResult.verified ? 'text-green-900' : 'text-red-900'
+                    verificationResult.verified ? 'text-primary' : 'text-red-900'
                   }`}>
                     {verificationResult.verified
                       ? 'No matches found - Verification passed'
