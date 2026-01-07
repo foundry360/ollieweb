@@ -41,3 +41,4 @@ WITH CHECK (true);
 -- VALUES ('user-uuid-here', 'admin@example.com')
 -- ON CONFLICT (id) DO NOTHING;
 
+

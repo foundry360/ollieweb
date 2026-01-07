@@ -169,7 +169,7 @@ export function UsersTable() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {users.map((user: User, index) => (
+              {users.map((user: User, index: number) => (
                 <tr key={user.id} className={`hover:bg-gray-50 ${index % 2 === 1 ? 'bg-gray-50' : ''}`}>
                   <td className="px-4 py-3 whitespace-nowrap">
                     <div className="text-xs font-medium text-gray-900">{user.full_name || 'No name'}</div>

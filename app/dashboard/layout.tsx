@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { requireAuth } from '@/lib/auth'
 import { SidebarNav } from '@/components/SidebarNav'
 import { LogoutButton } from '@/components/LogoutButton'
@@ -33,9 +34,11 @@ export default async function DashboardLayout({
               <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:top-0 lg:bottom-0 lg:border-r lg:border-gray-200" style={{ backgroundColor: '#111827' }}>
           <div className="flex-1 overflow-y-auto px-4 py-6">
             <div className="mb-6 flex justify-center">
-              <img
+              <Image
                 src="/header-logo.png"
                 alt="Ollie Admin"
+                width={64}
+                height={64}
                 className="h-16 w-auto object-contain"
               />
             </div>

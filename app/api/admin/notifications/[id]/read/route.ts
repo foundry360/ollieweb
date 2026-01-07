@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requireAuth } from '@/lib/auth'
 import { createAdminClient } from '@/lib/supabase/server'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -28,6 +30,7 @@ export async function POST(
     return NextResponse.json({ error: error.message || 'Failed to mark as read' }, { status: 500 })
   }
 }
+
 
 
 
