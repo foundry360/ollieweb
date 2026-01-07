@@ -130,6 +130,24 @@ export function NeighborVerificationModal({ application, onClose, onVerified }: 
                 <div>
                   <span className="text-gray-500">Name:</span>
                   <span className="ml-2 font-medium text-gray-900">{application.full_name}</span>
+                  <div className="mt-3">
+                    <div>
+                      {application.address ? (
+                        <>
+                          <span className="text-gray-500">Address:</span>
+                          <span className="ml-2 font-medium text-gray-900">{street}</span>
+                          {cityStateZip && (
+                            <div className="ml-[4.5rem] font-medium text-gray-900">{cityStateZip}</div>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          <span className="text-gray-500">Address:</span>
+                          <span className="ml-2 font-medium text-gray-900">Not provided</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <span className="text-gray-500">Date of Birth:</span>
@@ -138,40 +156,27 @@ export function NeighborVerificationModal({ application, onClose, onVerified }: 
                       ? new Date(application.date_of_birth).toLocaleDateString()
                       : 'Not provided'}
                   </span>
-                </div>
-                <div>
-                  <span className="text-gray-500">Phone:</span>
-                  <span className="ml-2 font-medium text-gray-900">{application.phone}</span>
-                </div>
-                <div className="col-span-2">
-                  <span className="text-gray-500">Address:</span>
-                  {application.address ? (
-                    <div className="ml-2 mt-1">
-                      <div className="font-medium text-gray-900">{street}</div>
-                      {cityStateZip && (
-                        <div className="font-medium text-gray-900">{cityStateZip}</div>
+                  <div className="mt-3">
+                    <span className="text-gray-500">Phone:</span>
+                    <span className="ml-2 font-medium text-gray-900">{application.phone}</span>
+                  </div>
+                  <div className="mt-3">
+                    <span className="text-gray-500">Verification Status:</span>
+                    <span className={`ml-2 font-medium inline-flex items-center ${
+                      application.phone_verified ? 'text-green-600' : 'text-gray-900'
+                    }`}>
+                      {application.phone_verified ? (
+                        <>
+                          <CheckCircle className="w-4 h-4 mr-1" />
+                          Verified {application.phone_verified_at 
+                            ? `on ${new Date(application.phone_verified_at).toLocaleDateString()}`
+                            : ''}
+                        </>
+                      ) : (
+                        'Not verified'
                       )}
-                    </div>
-                  ) : (
-                    <span className="ml-2 font-medium text-gray-900">Not provided</span>
-                  )}
-                </div>
-                <div className="col-span-2">
-                  <span className="text-gray-500">Verification Status:</span>
-                  <span className={`ml-2 font-medium flex items-center ${
-                    application.phone_verified ? 'text-green-600' : 'text-gray-900'
-                  }`}>
-                    {application.phone_verified ? (
-                      <>
-                        <CheckCircle className="w-4 h-4 mr-1" />
-                        Verified {application.phone_verified_at 
-                          ? `on ${new Date(application.phone_verified_at).toLocaleDateString()}`
-                          : ''}
-                      </>
-                    ) : (
-                      'Not verified'
-                    )}
-                  </span>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

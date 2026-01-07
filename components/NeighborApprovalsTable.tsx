@@ -195,8 +195,7 @@ export function NeighborApprovalsTable({ applications: initialApplications }: Ne
                     <div className="text-xs text-gray-500 mt-0.5">{app.email}</div>
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap">
-                    <div className="flex items-center text-xs text-gray-600">
-                      <Phone className="w-3 h-3 mr-1.5" />
+                    <div className="text-xs text-gray-600">
                       {app.phone}
                     </div>
                   </td>
@@ -238,7 +237,7 @@ export function NeighborApprovalsTable({ applications: initialApplications }: Ne
                   <td className="px-4 py-3 whitespace-nowrap">
                     {app.phone_verified ? (
                       <span className="flex items-center gap-1 text-xs text-green-600">
-                        <Phone className="w-3 h-3" />
+                        <Shield className="w-3 h-3" />
                         Verified
                       </span>
                     ) : (
