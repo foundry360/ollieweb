@@ -55,15 +55,21 @@ export function NeighborApprovalsTable({ applications: initialApplications }: Ne
         body: JSON.stringify({ applicationId }),
       })
 
+      const data = await response.json()
+
       if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.error || 'Failed to approve')
+        const errorMessage = data.details 
+          ? `${data.error}: ${data.details}`
+          : data.error || 'Failed to approve'
+        console.error('Approval error:', data)
+        throw new Error(errorMessage)
       }
 
       toast.success('Application approved successfully')
       queryClient.invalidateQueries({ queryKey: ['neighbor-applications'] })
       window.location.reload()
     } catch (error: any) {
+      console.error('Approval failed:', error)
       toast.error(error.message || 'Failed to approve application')
     }
   }
