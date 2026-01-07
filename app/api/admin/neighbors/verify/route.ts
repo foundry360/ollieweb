@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
   try {
-    await requireAuth()
+    const admin = await requireAuth()
     const adminClient = createAdminClient()
     const { applicationId } = await request.json()
 
@@ -118,6 +118,40 @@ export async function POST(request: NextRequest) {
       offenses: match.offenses || match.offense || match.charges || [],
     }))
 
+    // Get admin user ID from users table (for checked_by foreign key)
+    let checkedByUserId: string | null = null
+    if (admin && admin.id) {
+      const { data: adminUser } = await adminClient
+        .from('users')
+        .select('id')
+        .eq('id', admin.id)
+        .single()
+      
+      if (adminUser && adminUser.id) {
+        checkedByUserId = adminUser.id
+      }
+    }
+
+    // Save verification check audit record
+    const checkRecord = {
+      application_id: applicationId,
+      checked_by: checkedByUserId,
+      verified,
+      matches_count: matches.length,
+      offenders_data: offenders.length > 0 ? offenders : null,
+      api_response: apiData,
+      checked_at: new Date().toISOString(),
+    }
+
+    const { error: checkRecordError } = await adminClient
+      .from('neighbor_verification_checks')
+      .insert(checkRecord)
+
+    if (checkRecordError) {
+      console.error('Error saving verification check record:', checkRecordError)
+      // Don't fail the request, but log the error
+    }
+
     // Update the application with verification status
     const { error: updateError } = await adminClient
       .from('pending_neighbor_applications')
@@ -149,4 +183,5 @@ export async function POST(request: NextRequest) {
     }, { status: 500 })
   }
 }
+
 

@@ -64,6 +64,27 @@ export interface PendingNeighborApplication {
   updated_at: string
 }
 
+export interface NeighborVerificationCheck {
+  id: string
+  application_id: string
+  checked_by: string | null
+  verified: boolean
+  matches_count: number
+  offenders_data: Array<{
+    firstName: string
+    lastName: string
+    address: string
+    city: string
+    state: string
+    zipcode: string
+    offenses: string[]
+  }> | null
+  api_response: any
+  checked_at: string
+  created_at: string
+  updated_at: string
+}
+
 export interface Message {
   id: string
   gig_id: string | null

@@ -68,6 +68,36 @@ export function NeighborVerificationModal({ application, onClose, onVerified }: 
   const firstName = nameParts[0] || ''
   const lastName = nameParts.slice(1).join(' ') || ''
 
+  // Parse address into street address and city/state/zip
+  const parseAddress = (address: string | null) => {
+    if (!address) return { street: null, cityStateZip: null }
+    
+    // Try to split by comma - common format: "Street, City, State Zip"
+    const parts = address.split(',').map(p => p.trim())
+    
+    if (parts.length >= 2) {
+      // Street address is the first part
+      const street = parts[0]
+      // City, State Zip is the rest
+      const cityStateZip = parts.slice(1).join(', ')
+      return { street, cityStateZip }
+    }
+    
+    // If no comma, try to split by newline
+    if (address.includes('\n')) {
+      const lines = address.split('\n').map(p => p.trim())
+      return {
+        street: lines[0] || null,
+        cityStateZip: lines.slice(1).join(', ') || null
+      }
+    }
+    
+    // If we can't parse it, show the whole address as street
+    return { street: address, cityStateZip: null }
+  }
+
+  const { street, cityStateZip } = parseAddress(application.address)
+
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
@@ -99,40 +129,54 @@ export function NeighborVerificationModal({ application, onClose, onVerified }: 
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div>
                   <span className="text-gray-500">Name:</span>
-                  <span className="ml-2 font-medium">{application.full_name}</span>
+                  <span className="ml-2 font-medium text-gray-900">{application.full_name}</span>
+                  <div className="mt-3">
+                    <div>
+                      {application.address ? (
+                        <>
+                          <span className="text-gray-500">Address:</span>
+                          <span className="ml-2 font-medium text-gray-900">{street}</span>
+                          {cityStateZip && (
+                            <div className="ml-[4.5rem] font-medium text-gray-900">{cityStateZip}</div>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          <span className="text-gray-500">Address:</span>
+                          <span className="ml-2 font-medium text-gray-900">Not provided</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <span className="text-gray-500">Date of Birth:</span>
-                  <span className="ml-2 font-medium">
+                  <span className="ml-2 font-medium text-gray-900">
                     {application.date_of_birth
                       ? new Date(application.date_of_birth).toLocaleDateString()
                       : 'Not provided'}
                   </span>
-                </div>
-                <div>
-                  <span className="text-gray-500">Address:</span>
-                  <span className="ml-2 font-medium">{application.address || 'Not provided'}</span>
-                </div>
-                <div>
-                  <span className="text-gray-500">Phone:</span>
-                  <span className="ml-2 font-medium">{application.phone}</span>
-                </div>
-                <div className="col-span-2">
-                  <span className="text-gray-500">Verification Status:</span>
-                  <span className={`ml-2 font-medium flex items-center ${
-                    application.phone_verified ? 'text-green-600' : 'text-gray-600'
-                  }`}>
-                    {application.phone_verified ? (
-                      <>
-                        <CheckCircle className="w-4 h-4 mr-1" />
-                        Verified {application.phone_verified_at 
-                          ? `on ${new Date(application.phone_verified_at).toLocaleDateString()}`
-                          : ''}
-                      </>
-                    ) : (
-                      'Not verified'
-                    )}
-                  </span>
+                  <div className="mt-3">
+                    <span className="text-gray-500">Phone:</span>
+                    <span className="ml-2 font-medium text-gray-900">{application.phone}</span>
+                  </div>
+                  <div className="mt-3">
+                    <span className="text-gray-500">Verification Status:</span>
+                    <span className={`ml-2 font-medium inline-flex items-center ${
+                      application.phone_verified ? 'text-primary' : 'text-gray-900'
+                    }`}>
+                      {application.phone_verified ? (
+                        <>
+                          <CheckCircle className="w-4 h-4 mr-1 text-primary" />
+                          Verified {application.phone_verified_at 
+                            ? `on ${new Date(application.phone_verified_at).toLocaleDateString()}`
+                            : ''}
+                        </>
+                      ) : (
+                        'Not verified'
+                      )}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -146,12 +190,12 @@ export function NeighborVerificationModal({ application, onClose, onVerified }: 
               }`}>
                 <div className="flex items-center mb-3">
                   {verificationResult.verified ? (
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
+                    <CheckCircle className="h-5 w-5 text-primary mr-2" />
                   ) : (
                     <AlertCircle className="h-5 w-5 text-red-600 mr-2" />
                   )}
                   <h4 className={`text-sm font-medium ${
-                    verificationResult.verified ? 'text-green-900' : 'text-red-900'
+                    verificationResult.verified ? 'text-primary' : 'text-red-900'
                   }`}>
                     {verificationResult.verified
                       ? 'No matches found - Verification passed'
