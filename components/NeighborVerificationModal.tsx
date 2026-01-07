@@ -99,11 +99,11 @@ export function NeighborVerificationModal({ application, onClose, onVerified }: 
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div>
                   <span className="text-gray-500">Name:</span>
-                  <span className="ml-2 font-medium">{application.full_name}</span>
+                  <span className="ml-2 font-medium text-gray-900">{application.full_name}</span>
                 </div>
                 <div>
                   <span className="text-gray-500">Date of Birth:</span>
-                  <span className="ml-2 font-medium">
+                  <span className="ml-2 font-medium text-gray-900">
                     {application.date_of_birth
                       ? new Date(application.date_of_birth).toLocaleDateString()
                       : 'Not provided'}
@@ -111,16 +111,16 @@ export function NeighborVerificationModal({ application, onClose, onVerified }: 
                 </div>
                 <div>
                   <span className="text-gray-500">Address:</span>
-                  <span className="ml-2 font-medium">{application.address || 'Not provided'}</span>
+                  <span className="ml-2 font-medium text-gray-900">{application.address || 'Not provided'}</span>
                 </div>
                 <div>
                   <span className="text-gray-500">Phone:</span>
-                  <span className="ml-2 font-medium">{application.phone}</span>
+                  <span className="ml-2 font-medium text-gray-900">{application.phone}</span>
                 </div>
                 <div className="col-span-2">
                   <span className="text-gray-500">Verification Status:</span>
                   <span className={`ml-2 font-medium flex items-center ${
-                    application.phone_verified ? 'text-green-600' : 'text-gray-600'
+                    application.phone_verified ? 'text-green-600' : 'text-gray-900'
                   }`}>
                     {application.phone_verified ? (
                       <>
