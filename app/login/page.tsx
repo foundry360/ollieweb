@@ -72,9 +72,9 @@ function LoginForm() {
             <Image
               src="/logo_dk.png"
               alt="Ollie Logo"
-              width={64}
-              height={64}
-              className="h-16 w-auto object-contain"
+              width={140}
+              height={44}
+              className="h-11 w-auto object-contain"
             />
           </div>
           <h2 className="text-center text-3xl font-extrabold text-gray-900">
