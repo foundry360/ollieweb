@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Open_Sans } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
 import { QueryClientProvider } from './providers'
 
-const inter = Inter({ subsets: ['latin'] })
+const openSans = Open_Sans({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Ollie Admin Portal',
+  title: 'Ollie Jobs',
   description: 'Admin portal for managing Ollie platform',
   icons: {
     icon: '/favicon.ico',
@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={openSans.className}>
         <QueryClientProvider>
           {children}
           <Toaster position="top-right" />

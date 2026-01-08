@@ -1,7 +1,6 @@
-import { redirect } from 'next/navigation'
-import { getCurrentUser } from '@/lib/auth'
+import LandingPage from '@/components/LandingPage'
 
-export default async function Home() {
-  redirect('/dashboard')
+export default function Home() {
+  return <LandingPage />
 }
 
