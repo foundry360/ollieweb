@@ -9,7 +9,8 @@ import {
   MessageSquare, 
   Briefcase, 
   DollarSign,
-  CheckCircle
+  CheckCircle,
+  Mail
 } from 'lucide-react'
 
 const navItems = [
@@ -20,6 +21,7 @@ const navItems = [
   { href: '/dashboard/gigs', label: 'Gigs', icon: Briefcase },
   { href: '/dashboard/earnings', label: 'Earnings', icon: DollarSign },
   { href: '/dashboard/approvals', label: 'Approvals', icon: CheckCircle },
+  { href: '/dashboard/prelaunch', label: 'Pre-Launch Leads', icon: Mail },
 ]
 
 export function SidebarNav() {

@@ -140,3 +140,11 @@ export interface CompletionApproval {
   updated_at: string
 }
 
+export interface PreLaunchLead {
+  id: string
+  email: string
+  full_name: string | null
+  user_type: 'Neighbor' | 'Teenlancer' | 'Parent of Teenlancer' | null
+  created_at: string
+}
+

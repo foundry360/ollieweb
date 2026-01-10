@@ -24,7 +24,17 @@ export default function RootLayout({
       <body className={openSans.className}>
         <QueryClientProvider>
           {children}
-          <Toaster position="top-right" />
+          <Toaster 
+            position="top-right"
+            toastOptions={{
+              success: {
+                iconTheme: {
+                  primary: '#73af17',
+                  secondary: '#ffffff',
+                },
+              },
+            }}
+          />
         </QueryClientProvider>
       </body>
     </html>

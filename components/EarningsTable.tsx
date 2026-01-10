@@ -150,3 +150,5 @@ export function EarningsTable({ earnings: initialEarnings }: EarningsTableProps)
 
 
 
+
+
