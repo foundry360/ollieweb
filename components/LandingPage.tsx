@@ -18,13 +18,53 @@ import {
   Search,
   MessageCircle,
   Calendar,
-  ChevronDown
+  ChevronDown,
+  ArrowUp,
+  HelpCircle
 } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import ContactModal from './ContactModal'
+import PreLaunchModal from './PreLaunchModal'
 
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [openFAQ, setOpenFAQ] = useState<number | null>(null)
+  const [showBackToTop, setShowBackToTop] = useState(false)
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
+  const [isPreLaunchModalOpen, setIsPreLaunchModalOpen] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowBackToTop(true)
+      } else {
+        setShowBackToTop(false)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    // Open pre-launch modal when page loads
+    // Check if user has already closed the modal in this session
+    const hasSeenModal = sessionStorage.getItem('prelaunch-modal-seen')
+    if (!hasSeenModal) {
+      // Small delay to ensure smooth page load
+      const timer = setTimeout(() => {
+        setIsPreLaunchModalOpen(true)
+      }, 500)
+      return () => clearTimeout(timer)
+    }
+  }, [])
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -50,21 +90,24 @@ export default function LandingPage() {
               <Link href="#how-it-works" className="text-white hover:text-brand-green transition-colors">
                 How It Works
               </Link>
-              <Link href="#for-teens" className="text-white hover:text-brand-green transition-colors">
+              <Link href="/teenlancers" className="text-white hover:text-brand-green transition-colors">
                 For Teenlancers
               </Link>
-              <Link href="#for-neighbors" className="text-white hover:text-brand-green transition-colors">
+              <Link href="/neighbors" className="text-white hover:text-brand-green transition-colors">
                 For Neighbors
               </Link>
               <Link href="/login" className="text-white hover:text-brand-green transition-colors">
                 Login
               </Link>
-              <Link 
-                href="#get-started"
-                className="bg-brand-green text-white px-5 py-3 rounded-lg hover:bg-opacity-90 transition-colors"
+              <button
+                onClick={(e) => {
+                  e.preventDefault()
+                  setIsPreLaunchModalOpen(true)
+                }}
+                className="bg-transparent border border-white text-white px-4 py-2 rounded-lg hover:bg-white hover:text-brand-dark transition-colors"
               >
-                Get Started
-              </Link>
+                Notify Me
+              </button>
             </div>
 
             {/* Mobile Menu Button */}
@@ -95,14 +138,14 @@ export default function LandingPage() {
                 How It Works
               </Link>
               <Link 
-                href="#for-teens" 
+                href="/teenlancers" 
                 className="block text-white hover:text-brand-green transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 For Teenlancers
               </Link>
               <Link 
-                href="#for-neighbors" 
+                href="/neighbors" 
                 className="block text-white hover:text-brand-green transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
@@ -115,20 +158,23 @@ export default function LandingPage() {
               >
                 Login
               </Link>
-              <Link 
-                href="#get-started"
-                className="block bg-brand-green text-white px-5 py-3 rounded-lg hover:bg-opacity-90 transition-colors text-center"
-                onClick={() => setMobileMenuOpen(false)}
+              <button
+                onClick={(e) => {
+                  e.preventDefault()
+                  setMobileMenuOpen(false)
+                  setIsPreLaunchModalOpen(true)
+                }}
+                className="w-full bg-transparent border border-white text-white px-4 py-2 rounded-lg hover:bg-white hover:text-brand-dark transition-colors text-center"
               >
-                Get Started
-              </Link>
+                Notify Me
+              </button>
             </div>
           )}
         </nav>
       </header>
 
       {/* Hero Section */}
-      <section className="w-full bg-gradient-to-b from-gray-50 to-white relative">
+      <section className="w-full bg-gradient-to-b from-gray-50 to-white relative border-b border-gray-200">
         <div className="w-full relative">
           <Image
             src="/hero_banner.png"
@@ -139,11 +185,14 @@ export default function LandingPage() {
             priority
           />
           {/* App Store and Google Play badges positioned above www.olliejobs.com */}
-          <div className="absolute bottom-[calc(18%+10px)] left-[calc(25%+6px)] transform -translate-x-1/2 flex flex-col sm:flex-row gap-3 justify-center items-center z-10">
+          <div className="absolute bottom-[20%] left-[calc(25%+6px)] transform -translate-x-1/2 flex flex-col sm:flex-row gap-3 justify-center items-center z-10">
             {/* App Store badge */}
-            <a
-              href="#"
-              className="hover:opacity-80 transition-opacity"
+            <button
+              onClick={(e) => {
+                e.preventDefault()
+                setIsPreLaunchModalOpen(true)
+              }}
+              className="hover:opacity-80 transition-opacity bg-transparent border-none cursor-pointer"
               aria-label="Download on the App Store"
             >
               <Image
@@ -153,11 +202,14 @@ export default function LandingPage() {
                 height={50}
                 className="h-auto w-auto object-contain max-w-[150px]"
               />
-            </a>
+              </button>
             {/* Google Play badge */}
-            <a
-              href="#"
-              className="hover:opacity-80 transition-opacity"
+            <button
+              onClick={(e) => {
+                e.preventDefault()
+                setIsPreLaunchModalOpen(true)
+              }}
+              className="hover:opacity-80 transition-opacity bg-transparent border-none cursor-pointer"
               aria-label="Get it on Google Play"
             >
               <Image
@@ -167,13 +219,13 @@ export default function LandingPage() {
                 height={50}
                 className="h-auto w-auto object-contain max-w-[150px]"
               />
-            </a>
+              </button>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 px-6 bg-gray-50">
+      <section id="features" className="py-20 px-6 bg-white">
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-brand-dark mb-4">
             Why Choose Ollie?
@@ -183,54 +235,62 @@ export default function LandingPage() {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* For Teens Feature */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-border-gray hover:shadow-lg transition-shadow">
-              <div className="bg-brand-green/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                <Briefcase className="text-brand-green" size={24} />
+            <div className="bg-white p-3 rounded-lg shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
+              <div className="border border-brand-green rounded-lg p-4 h-full flex flex-col">
+                <div className="bg-brand-green/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                  <Briefcase className="text-brand-green" size={24} />
+                </div>
+                <h3 className="text-xl font-semibold text-brand-dark mb-3">For Teenlancers</h3>
+                <p className="text-text-gray-light flex-grow">
+                  Browse gigs, earn money, and build valuable skills in your community. Perfect for teenlancers looking for flexible work opportunities.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-brand-dark mb-3">For Teenlancers</h3>
-              <p className="text-text-gray-light">
-                Browse gigs, earn money, and build valuable skills in your community. Perfect for teenlancers looking for flexible work opportunities.
-              </p>
             </div>
 
             {/* For Neighbors Feature */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-border-gray hover:shadow-lg transition-shadow">
-              <div className="bg-brand-green/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                <Users className="text-brand-green" size={24} />
+            <div className="bg-white p-3 rounded-lg shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
+              <div className="border border-brand-green rounded-lg p-4 h-full flex flex-col">
+                <div className="bg-brand-green/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                  <Users className="text-brand-green" size={24} />
+                </div>
+                <h3 className="text-xl font-semibold text-brand-dark mb-3">For Neighbors</h3>
+                <p className="text-text-gray-light flex-grow">
+                  Post tasks, find reliable help, and support teenlancers in your community. Get things done while making a difference.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-brand-dark mb-3">For Neighbors</h3>
-              <p className="text-text-gray-light">
-                Post tasks, find reliable help, and support teenlancers in your community. Get things done while making a difference.
-              </p>
             </div>
 
             {/* Safe & Verified Feature */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-border-gray hover:shadow-lg transition-shadow">
-              <div className="bg-brand-green/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                <Shield className="text-brand-green" size={24} />
+            <div className="bg-white p-3 rounded-lg shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
+              <div className="border border-brand-green rounded-lg p-4 h-full flex flex-col">
+                <div className="bg-brand-green/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                  <Shield className="text-brand-green" size={24} />
+                </div>
+                <h3 className="text-xl font-semibold text-brand-dark mb-3">Safe & Verified</h3>
+                <p className="text-text-gray-light flex-grow">
+                  Parent approval, verified users, and secure payments. Your safety and peace of mind are our top priorities.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-brand-dark mb-3">Safe & Verified</h3>
-              <p className="text-text-gray-light">
-                Parent approval, verified users, and secure payments. Your safety and peace of mind are our top priorities.
-              </p>
             </div>
 
             {/* Community Powered Feature */}
-            <div className="bg-white p-6 rounded-lg shadow-md border border-border-gray hover:shadow-lg transition-shadow">
-              <div className="bg-brand-green/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                <Heart className="text-brand-green" size={24} />
+            <div className="bg-white p-3 rounded-lg shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
+              <div className="border border-brand-green rounded-lg p-4 h-full flex flex-col">
+                <div className="bg-brand-green/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                  <Heart className="text-brand-green" size={24} />
+                </div>
+                <h3 className="text-xl font-semibold text-brand-dark mb-3">Community Powered</h3>
+                <p className="text-text-gray-light flex-grow">
+                  Local connections and a trusted network. Build relationships while accomplishing tasks in your neighborhood.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-brand-dark mb-3">Community Powered</h3>
-              <p className="text-text-gray-light">
-                Local connections and a trusted network. Build relationships while accomplishing tasks in your neighborhood.
-              </p>
             </div>
           </div>
         </div>
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-20 px-6 bg-white">
+      <section id="how-it-works" className="py-20 px-6 bg-gray-50">
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-brand-dark mb-4 animate-fade-in-up">
             How It Works
@@ -325,78 +385,84 @@ export default function LandingPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Testimonial 1 - Teen */}
-            <div className="bg-gray-50 p-6 rounded-lg border border-border-gray">
-              <div className="flex items-center mb-4">
-                <div className="flex text-accent-amber">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={16} className="fill-current" />
-                  ))}
+            <div className="bg-gray-50 p-3 rounded-lg shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
+              <div className="border border-brand-green rounded-lg p-4 h-full flex flex-col">
+                <div className="flex items-center mb-4">
+                  <div className="flex text-accent-amber">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={16} className="fill-current" />
+                    ))}
+                  </div>
                 </div>
-              </div>
-              <p className="text-text-gray-light mb-4">
-                &quot;I&apos;ve earned over $500 in just a few months doing local gigs. The best part is working in my neighborhood and building connections!&quot;
-              </p>
-              <div className="flex items-center">
-                <div className="w-10 h-10 bg-brand-green rounded-full flex items-center justify-center text-white font-bold mr-3">
-                  A
-                </div>
-                <div>
-                  <p className="font-semibold text-brand-dark">Alex, 16</p>
-                  <div className="flex items-center text-accent-orange text-sm">
-                    <CheckCircle size={14} className="mr-1" />
-                    <span>Verified Teenlancer</span>
+                <p className="text-text-gray-light mb-4 flex-grow">
+                  &quot;I&apos;ve earned over $500 in just a few months doing local gigs. The best part is working in my neighborhood and building connections!&quot;
+                </p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-brand-green rounded-full flex items-center justify-center text-white font-bold mr-3">
+                    A
+                  </div>
+                  <div>
+                    <p className="font-semibold text-brand-dark">Alex, 16</p>
+                    <div className="flex items-center text-accent-orange text-sm">
+                      <CheckCircle size={14} className="mr-1" />
+                      <span>Verified Teenlancer</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Testimonial 2 - Neighbor */}
-            <div className="bg-gray-50 p-6 rounded-lg border border-border-gray">
-              <div className="flex items-center mb-4">
-                <div className="flex text-accent-amber">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={16} className="fill-current" />
-                  ))}
+            <div className="bg-gray-50 p-3 rounded-lg shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
+              <div className="border border-brand-green rounded-lg p-4 h-full flex flex-col">
+                <div className="flex items-center mb-4">
+                  <div className="flex text-accent-amber">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={16} className="fill-current" />
+                    ))}
+                  </div>
                 </div>
-              </div>
-              <p className="text-text-gray-light mb-4">
-                &quot;Finding reliable help for yard work and errands has never been easier. The teens are responsible and the parent verification gives me peace of mind.&quot;
-              </p>
-              <div className="flex items-center">
-                <div className="w-10 h-10 bg-brand-green rounded-full flex items-center justify-center text-white font-bold mr-3">
-                  S
-                </div>
-                <div>
-                  <p className="font-semibold text-brand-dark">Sarah M.</p>
-                  <div className="flex items-center text-accent-orange text-sm">
-                    <CheckCircle size={14} className="mr-1" />
-                    <span>Verified Neighbor</span>
+                <p className="text-text-gray-light mb-4 flex-grow">
+                  &quot;Finding reliable help for yard work and errands has never been easier. The teens are responsible and the parent verification gives me peace of mind.&quot;
+                </p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-brand-green rounded-full flex items-center justify-center text-white font-bold mr-3">
+                    S
+                  </div>
+                  <div>
+                    <p className="font-semibold text-brand-dark">Sarah M.</p>
+                    <div className="flex items-center text-accent-orange text-sm">
+                      <CheckCircle size={14} className="mr-1" />
+                      <span>Verified Neighbor</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Testimonial 3 - Parent */}
-            <div className="bg-gray-50 p-6 rounded-lg border border-border-gray">
-              <div className="flex items-center mb-4">
-                <div className="flex text-accent-amber">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={16} className="fill-current" />
-                  ))}
+            <div className="bg-gray-50 p-3 rounded-lg shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
+              <div className="border border-brand-green rounded-lg p-4 h-full flex flex-col">
+                <div className="flex items-center mb-4">
+                  <div className="flex text-accent-amber">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={16} className="fill-current" />
+                    ))}
+                  </div>
                 </div>
-              </div>
-              <p className="text-text-gray-light mb-4">
-                &quot;As a parent, I love that I can approve gigs and track my teen&apos;s work. It&apos;s safe, local, and teaches valuable life skills.&quot;
-              </p>
-              <div className="flex items-center">
-                <div className="w-10 h-10 bg-brand-green rounded-full flex items-center justify-center text-white font-bold mr-3">
-                  M
-                </div>
-                <div>
-                  <p className="font-semibold text-brand-dark">Mike T.</p>
-                  <div className="flex items-center text-accent-orange text-sm">
-                    <CheckCircle size={14} className="mr-1" />
-                    <span>Verified Parent</span>
+                <p className="text-text-gray-light mb-4 flex-grow">
+                  &quot;As a parent, I love that I can approve gigs and track my teen&apos;s work. It&apos;s safe, local, and teaches valuable life skills.&quot;
+                </p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-brand-green rounded-full flex items-center justify-center text-white font-bold mr-3">
+                    M
+                  </div>
+                  <div>
+                    <p className="font-semibold text-brand-dark">Mike T.</p>
+                    <div className="flex items-center text-accent-orange text-sm">
+                      <CheckCircle size={14} className="mr-1" />
+                      <span>Verified Parent</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -423,14 +489,14 @@ export default function LandingPage() {
             
             <div className="space-y-12 md:space-y-16">
               {/* Item 1 - Left */}
-              <div className="relative flex items-center justify-between">
+              <div className="relative flex items-center justify-between group">
                 <div className="w-full md:w-[48%] md:pr-4">
-                  <div className="bg-white p-6 rounded-lg border border-border-gray">
+                  <div className="bg-white p-6 rounded-lg border border-border-gray group-hover:bg-brand-green transition-all duration-300 cursor-pointer">
                     <div className="flex items-center mb-4 md:hidden">
-                      <Shield className="text-brand-green mr-3" size={32} />
-                      <h3 className="text-xl font-semibold text-brand-dark">Verified Profiles</h3>
+                      <Shield className="text-brand-green mr-3 group-hover:text-white transition-colors" size={32} />
+                      <h3 className="text-xl font-semibold text-brand-dark group-hover:text-white transition-colors">Verified Profiles</h3>
                     </div>
-                    <p className="text-text-gray-light">
+                    <p className="text-text-gray-light group-hover:text-white transition-colors">
                       Every user on Ollie goes through our verification process. Teens need parent or guardian approval to join, and neighbors verify their identity before posting gigs. Our verification badges help you instantly recognize trusted community members.
                     </p>
                   </div>
@@ -448,7 +514,7 @@ export default function LandingPage() {
               </div>
 
               {/* Item 2 - Right */}
-              <div className="relative flex items-center justify-between">
+              <div className="relative flex items-center justify-between group">
                 {/* Icon and heading on left side */}
                 <div className="hidden md:block w-[48%] pr-4">
                   <div className="flex items-center justify-end">
@@ -459,12 +525,12 @@ export default function LandingPage() {
                 {/* Center connector dot */}
                 <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-brand-green rounded-full border-4 border-white z-10"></div>
                 <div className="w-full md:w-[48%] md:pl-4">
-                  <div className="bg-white p-6 rounded-lg border border-border-gray">
+                  <div className="bg-white p-6 rounded-lg border border-border-gray group-hover:bg-brand-green transition-all duration-300 cursor-pointer">
                     <div className="flex items-center mb-4 md:hidden">
-                      <Users className="text-brand-green mr-3" size={32} />
-                      <h3 className="text-xl font-semibold text-brand-dark">Parental Oversight & Control</h3>
+                      <Users className="text-brand-green mr-3 group-hover:text-white transition-colors" size={32} />
+                      <h3 className="text-xl font-semibold text-brand-dark group-hover:text-white transition-colors">Parental Oversight & Control</h3>
                     </div>
-                    <p className="text-text-gray-light">
+                    <p className="text-text-gray-light group-hover:text-white transition-colors">
                       Parents aren&apos;t locked out - they&apos;re built in. View all gig activity, set approval requirements for new gigs, monitor communications, and manage payment settings. You decide how much independence your teen has while they learn responsibility and earn money.
                     </p>
                   </div>
@@ -472,14 +538,14 @@ export default function LandingPage() {
               </div>
 
               {/* Item 3 - Left */}
-              <div className="relative flex items-center justify-between">
+              <div className="relative flex items-center justify-between group">
                 <div className="w-full md:w-[48%] md:pr-4">
-                  <div className="bg-white p-6 rounded-lg border border-border-gray">
+                  <div className="bg-white p-6 rounded-lg border border-border-gray group-hover:bg-brand-green transition-all duration-300 cursor-pointer">
                     <div className="flex items-center mb-4 md:hidden">
-                      <MessageCircle className="text-brand-green mr-3" size={32} />
-                      <h3 className="text-xl font-semibold text-brand-dark">Secure In-App Communication</h3>
+                      <MessageCircle className="text-brand-green mr-3 group-hover:text-white transition-colors" size={32} />
+                      <h3 className="text-xl font-semibold text-brand-dark group-hover:text-white transition-colors">Secure In-App Communication</h3>
                     </div>
-                    <p className="text-text-gray-light">
+                    <p className="text-text-gray-light group-hover:text-white transition-colors">
                       All messages stay within the Ollie platform where parents can review them. No need to share personal phone numbers or contact information. Communication is transparent, monitored, and designed to keep everyone accountable.
                     </p>
                   </div>
@@ -497,7 +563,7 @@ export default function LandingPage() {
               </div>
 
               {/* Item 4 - Right */}
-              <div className="relative flex items-center justify-between">
+              <div className="relative flex items-center justify-between group">
                 {/* Icon and heading on left side */}
                 <div className="hidden md:block w-[48%] pr-4">
                   <div className="flex items-center justify-end">
@@ -508,12 +574,12 @@ export default function LandingPage() {
                 {/* Center connector dot */}
                 <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-brand-green rounded-full border-4 border-white z-10"></div>
                 <div className="w-full md:w-[48%] md:pl-4">
-                  <div className="bg-white p-6 rounded-lg border border-border-gray">
+                  <div className="bg-white p-6 rounded-lg border border-border-gray group-hover:bg-brand-green transition-all duration-300 cursor-pointer">
                     <div className="flex items-center mb-4 md:hidden">
-                      <DollarSign className="text-brand-green mr-3" size={32} />
-                      <h3 className="text-xl font-semibold text-brand-dark">Safe Payment Processing</h3>
+                      <DollarSign className="text-brand-green mr-3 group-hover:text-white transition-colors" size={32} />
+                      <h3 className="text-xl font-semibold text-brand-dark group-hover:text-white transition-colors">Safe Payment Processing</h3>
                     </div>
-                    <p className="text-text-gray-light">
+                    <p className="text-text-gray-light group-hover:text-white transition-colors">
                       Money never changes hands in person. All payments are processed securely through Ollie&apos;s platform. Once a teen completes the gig, neighbors review and approve the work in the app, then payment is processed and transferred to the teen&apos;s account - creating transparency and protection for everyone.
                     </p>
                   </div>
@@ -521,14 +587,14 @@ export default function LandingPage() {
               </div>
 
               {/* Item 5 - Left */}
-              <div className="relative flex items-center justify-between">
+              <div className="relative flex items-center justify-between group">
                 <div className="w-full md:w-[48%] md:pr-4">
-                  <div className="bg-white p-6 rounded-lg border border-border-gray">
+                  <div className="bg-white p-6 rounded-lg border border-border-gray group-hover:bg-brand-green transition-all duration-300 cursor-pointer">
                     <div className="flex items-center mb-4 md:hidden">
-                      <FileText className="text-brand-green mr-3" size={32} />
-                      <h3 className="text-xl font-semibold text-brand-dark">Community Guidelines & Support</h3>
+                      <FileText className="text-brand-green mr-3 group-hover:text-white transition-colors" size={32} />
+                      <h3 className="text-xl font-semibold text-brand-dark group-hover:text-white transition-colors">Community Guidelines & Support</h3>
                     </div>
-                    <p className="text-text-gray-light">
+                    <p className="text-text-gray-light group-hover:text-white transition-colors">
                       Clear expectations help everyone succeed. Our community guidelines outline appropriate behavior, safety best practices, and what to do if something doesn&apos;t feel right. Our support team is always available to help resolve concerns quickly.
                     </p>
                   </div>
@@ -546,7 +612,7 @@ export default function LandingPage() {
               </div>
 
               {/* Item 6 - Right */}
-              <div className="relative flex items-center justify-between">
+              <div className="relative flex items-center justify-between group">
                 {/* Icon and heading on left side */}
                 <div className="hidden md:block w-[48%] pr-4">
                   <div className="flex items-center justify-end">
@@ -557,12 +623,12 @@ export default function LandingPage() {
                 {/* Center connector dot */}
                 <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-brand-green rounded-full border-4 border-white z-10"></div>
                 <div className="w-full md:w-[48%] md:pl-4">
-                  <div className="bg-white p-6 rounded-lg border border-border-gray">
+                  <div className="bg-white p-6 rounded-lg border border-border-gray group-hover:bg-brand-green transition-all duration-300 cursor-pointer">
                     <div className="flex items-center mb-4 md:hidden">
-                      <CheckCircle2 className="text-brand-green mr-3" size={32} />
-                      <h3 className="text-xl font-semibold text-brand-dark">Age-Appropriate Work Only</h3>
+                      <CheckCircle2 className="text-brand-green mr-3 group-hover:text-white transition-colors" size={32} />
+                      <h3 className="text-xl font-semibold text-brand-dark group-hover:text-white transition-colors">Age-Appropriate Work Only</h3>
                     </div>
-                    <p className="text-text-gray-light">
+                    <p className="text-text-gray-light group-hover:text-white transition-colors">
                       We carefully curate the types of gigs available on Ollie to ensure they&apos;re suitable for teens. No dangerous equipment, no late-night hours, and no situations that put young people at risk. Just honest work that builds skills and character.
                     </p>
                   </div>
@@ -842,12 +908,15 @@ export default function LandingPage() {
           <p className="text-xl mb-12 text-white/90">
             Join thousands of teenlancers and neighbors building a stronger community together.
           </p>
-          <Link
-            href="/login"
-            className="inline-block bg-white text-brand-green px-8 py-4 rounded-lg hover:bg-gray-100 transition-all transform hover:scale-105 text-lg font-semibold"
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              setIsPreLaunchModalOpen(true)
+            }}
+            className="inline-block bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-brand-green transition-all transform hover:scale-105 text-lg font-semibold"
           >
-            Sign Up Now
-          </Link>
+            Notify Me
+          </button>
         </div>
       </section>
 
@@ -885,6 +954,11 @@ export default function LandingPage() {
                     Terms of Service
                   </Link>
                 </li>
+                <li>
+                  <Link href="/community-guidelines" className="text-text-gray-dark hover:text-white transition-colors">
+                    Community Guidelines
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
@@ -908,6 +982,39 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+
+      {/* Back to Top Button */}
+      {showBackToTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 bg-brand-green text-white p-4 rounded-full shadow-lg hover:bg-opacity-90 transition-all transform hover:scale-110 z-50"
+          aria-label="Back to top"
+        >
+          <ArrowUp size={24} />
+        </button>
+      )}
+
+      {/* Have a Question Button */}
+      <button
+        onClick={() => setIsContactModalOpen(true)}
+        className="fixed bottom-8 left-8 bg-brand-green text-white px-6 py-4 rounded-full shadow-lg hover:bg-opacity-90 transition-all transform hover:scale-105 z-50 flex items-center gap-2 font-semibold"
+        aria-label="Have a question?"
+      >
+        <HelpCircle size={20} />
+        <span className="hidden sm:inline">Have a Question?</span>
+      </button>
+
+      {/* Contact Modal */}
+      <ContactModal
+        isOpen={isContactModalOpen}
+        onClose={() => setIsContactModalOpen(false)}
+      />
+
+      {/* Pre-Launch Modal */}
+      <PreLaunchModal
+        isOpen={isPreLaunchModalOpen}
+        onClose={() => setIsPreLaunchModalOpen(false)}
+      />
     </div>
   )
 }

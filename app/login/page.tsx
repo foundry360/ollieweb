@@ -2,7 +2,9 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
+import { ArrowLeft } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 function LoginForm() {
@@ -65,10 +67,18 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-md">
+    <div className="min-h-screen flex items-center justify-center bg-brand-dark relative overflow-hidden">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{
+          backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)',
+          backgroundSize: '40px 40px'
+        }}></div>
+      </div>
+      
+      <div className="max-w-md w-full space-y-8 p-8 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-white/10 relative z-10">
         <div>
-          <div className="flex justify-center mb-6">
+          <div className="flex justify-center mb-6 opacity-90">
             <Image
               src="/logo_dk.png"
               alt="Ollie Logo"
@@ -77,10 +87,10 @@ function LoginForm() {
               className="h-11 w-auto object-contain"
             />
           </div>
-          <h2 className="text-center text-3xl font-extrabold text-gray-900">
-            Ollie Admin Portal
+          <h2 className="text-center text-3xl font-semibold text-gray-800">
+            Welcome to Ollie!
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm text-gray-500">
             Sign in to your admin account
           </p>
         </div>
@@ -95,7 +105,7 @@ function LoginForm() {
               type="email"
               autoComplete="email"
               required
-              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+              className="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-200 bg-gray-50/50 placeholder-gray-400 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 sm:text-sm transition-all"
               placeholder="Email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -111,7 +121,7 @@ function LoginForm() {
               type="password"
               autoComplete="current-password"
               required
-              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+              className="appearance-none rounded-lg relative block w-full px-4 py-3 border border-gray-200 bg-gray-50/50 placeholder-gray-400 text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 sm:text-sm transition-all"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -121,12 +131,21 @@ function LoginForm() {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-primary/90 hover:bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm"
             >
               {loading ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
         </form>
+        <div className="text-center">
+          <Link
+            href="/"
+            className="inline-flex items-center text-sm text-gray-400 hover:text-gray-300 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to landing page
+          </Link>
+        </div>
       </div>
     </div>
   )
@@ -135,10 +154,16 @@ function LoginForm() {
 export default function LoginPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-md">
+      <div className="min-h-screen flex items-center justify-center bg-brand-dark relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)',
+            backgroundSize: '40px 40px'
+          }}></div>
+        </div>
+        <div className="max-w-md w-full space-y-8 p-8 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-white/10 relative z-10">
           <div className="flex justify-center">
-            <div className="text-gray-500">Loading...</div>
+            <div className="text-gray-400">Loading...</div>
           </div>
         </div>
       </div>
