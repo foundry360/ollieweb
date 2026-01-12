@@ -124,8 +124,8 @@ export default function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps)
               Ollie connects teens (14-19) with neighbors who need help with everyday tasks, all with complete parental oversight.
             </p>
 
-            <p className="text-brand-dark font-medium mb-4">
-              Join the waitlist to get early access.
+            <p className="text-gray-600 font-medium mb-4">
+              Join our pre-launch community and be among the first to experience the new neighborhood economy.
             </p>
 
             {/* Form */}
@@ -205,7 +205,7 @@ export default function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps)
                     Joining...
                   </>
                 ) : (
-                  'Notify Me'
+                  'Get Notified'
                 )}
               </button>
             </form>

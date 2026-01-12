@@ -58,7 +58,7 @@ export default function NeighborsPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header/Navigation */}
-      <header className="bg-brand-dark text-white">
+      <header className="bg-brand-dark text-white sticky top-0 z-50">
         <nav className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center">
@@ -73,17 +73,14 @@ export default function NeighborsPage() {
             
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <Link href="/#features" className="text-white hover:text-brand-green transition-colors">
-                Features
-              </Link>
-              <Link href="/#how-it-works" className="text-white hover:text-brand-green transition-colors">
-                How It Works
-              </Link>
               <Link href="/teenlancers" className="text-white hover:text-brand-green transition-colors">
                 For Teenlancers
               </Link>
               <Link href="/neighbors" className="text-brand-green font-semibold">
                 For Neighbors
+              </Link>
+              <Link href="/community" className="text-white hover:text-brand-green transition-colors">
+                Community
               </Link>
               <Link href="/login" className="text-white hover:text-brand-green transition-colors">
                 Login
@@ -95,7 +92,7 @@ export default function NeighborsPage() {
                 }}
                 className="bg-transparent border border-white text-white px-4 py-2 rounded-lg hover:bg-white hover:text-brand-dark transition-colors"
               >
-                Notify Me
+                Get Notified
               </button>
             </div>
 
@@ -113,20 +110,6 @@ export default function NeighborsPage() {
           {mobileMenuOpen && (
             <div className="md:hidden mt-4 pb-4 space-y-4">
               <Link 
-                href="/#features" 
-                className="block text-white hover:text-brand-green transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Features
-              </Link>
-              <Link 
-                href="/#how-it-works" 
-                className="block text-white hover:text-brand-green transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                How It Works
-              </Link>
-              <Link 
                 href="/teenlancers" 
                 className="block text-white hover:text-brand-green transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
@@ -139,6 +122,13 @@ export default function NeighborsPage() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 For Neighbors
+              </Link>
+              <Link 
+                href="/community" 
+                className="block text-white hover:text-brand-green transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Community
               </Link>
               <Link 
                 href="/login" 
@@ -155,7 +145,7 @@ export default function NeighborsPage() {
                 }}
                 className="w-full bg-transparent border border-white text-white px-4 py-2 rounded-lg hover:bg-white hover:text-brand-dark transition-colors text-center"
               >
-                Notify Me
+                Get Notified
               </button>
             </div>
           )}
@@ -455,7 +445,7 @@ export default function NeighborsPage() {
             }}
             className="inline-block bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-brand-green transition-all transform hover:scale-105 text-lg font-semibold"
           >
-            Notify Me
+            Get Notified
           </button>
         </div>
       </section>
