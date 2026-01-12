@@ -51,10 +51,10 @@ export default function LandingPage() {
     // Check if user has already closed the modal in this session
     const hasSeenModal = sessionStorage.getItem('prelaunch-modal-seen')
     if (!hasSeenModal) {
-      // Small delay to ensure smooth page load
+      // Delay to ensure smooth page load and better UX
       const timer = setTimeout(() => {
         setIsPreLaunchModalOpen(true)
-      }, 500)
+      }, 2500)
       return () => clearTimeout(timer)
     }
   }, [])
@@ -174,8 +174,8 @@ export default function LandingPage() {
             className="w-full h-auto object-contain"
             priority
           />
-          {/* App Store and Google Play badges positioned above www.olliejobs.com */}
-          <div className="absolute bottom-[20%] left-[calc(25%+6px)] transform -translate-x-1/2 flex flex-col sm:flex-row gap-3 justify-center items-center z-10">
+          {/* App Store and Google Play badges positioned above www.olliejobs.com - Hidden on mobile, shown on desktop */}
+          <div className="hidden sm:flex absolute bottom-[20%] left-[calc(25%+6px)] transform -translate-x-1/2 flex-row gap-3 justify-center items-center z-10">
             {/* App Store badge */}
             <button
               onClick={(e) => {
@@ -190,9 +190,9 @@ export default function LandingPage() {
                 alt="Download on the App Store"
                 width={150}
                 height={50}
-                className="h-auto w-auto object-contain max-w-[150px]"
+                className="h-auto w-auto object-contain max-w-[120px] sm:max-w-[150px]"
               />
-              </button>
+            </button>
             {/* Google Play badge */}
             <button
               onClick={(e) => {
@@ -207,9 +207,9 @@ export default function LandingPage() {
                 alt="Get it on Google Play"
                 width={150}
                 height={50}
-                className="h-auto w-auto object-contain max-w-[150px]"
+                className="h-auto w-auto object-contain max-w-[120px] sm:max-w-[150px]"
               />
-              </button>
+            </button>
           </div>
         </div>
       </section>
@@ -996,6 +996,41 @@ export default function LandingPage() {
               <p className="text-text-gray-dark text-sm">
                 A platform where teenlancers can find local gigs and neighbors can post tasks.
               </p>
+              {/* App Store and Google Play badges - Mobile only */}
+              <div className="flex sm:hidden flex-col gap-3 mt-6">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setIsPreLaunchModalOpen(true)
+                  }}
+                  className="hover:opacity-80 transition-opacity bg-transparent border-none cursor-pointer self-start"
+                  aria-label="Download on the App Store"
+                >
+                  <Image
+                    src="/apple.png"
+                    alt="Download on the App Store"
+                    width={150}
+                    height={50}
+                    className="h-auto w-auto object-contain max-w-[140px]"
+                  />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setIsPreLaunchModalOpen(true)
+                  }}
+                  className="hover:opacity-80 transition-opacity bg-transparent border-none cursor-pointer self-start"
+                  aria-label="Get it on Google Play"
+                >
+                  <Image
+                    src="/google.png"
+                    alt="Get it on Google Play"
+                    width={150}
+                    height={50}
+                    className="h-auto w-auto object-contain max-w-[140px]"
+                  />
+                </button>
+              </div>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Legal</h4>
@@ -1043,20 +1078,20 @@ export default function LandingPage() {
       {showBackToTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 bg-brand-green text-white p-4 rounded-full shadow-lg hover:bg-opacity-90 transition-all transform hover:scale-110 z-50"
+          className="fixed bottom-20 sm:bottom-8 right-4 sm:right-8 bg-brand-green text-white p-3 sm:p-4 rounded-full shadow-lg hover:bg-opacity-90 transition-all transform hover:scale-110 z-50"
           aria-label="Back to top"
         >
-          <ArrowUp size={24} />
+          <ArrowUp size={20} className="sm:w-6 sm:h-6" />
         </button>
       )}
 
       {/* Have a Question Button */}
       <button
         onClick={() => setIsContactModalOpen(true)}
-        className="fixed bottom-8 left-8 bg-brand-green text-white px-6 py-4 rounded-full shadow-lg hover:bg-opacity-90 transition-all transform hover:scale-105 z-50 flex items-center gap-2 font-semibold"
+        className="fixed bottom-4 sm:bottom-8 left-4 sm:left-8 bg-brand-green text-white px-4 sm:px-6 py-3 sm:py-4 rounded-full shadow-lg hover:bg-opacity-90 transition-all transform hover:scale-105 z-50 flex items-center gap-2 font-semibold text-sm sm:text-base"
         aria-label="Have a question?"
       >
-        <HelpCircle size={20} />
+        <HelpCircle size={18} className="sm:w-5 sm:h-5" />
         <span className="hidden sm:inline">Have a Question?</span>
       </button>
 

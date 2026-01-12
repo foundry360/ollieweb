@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { X } from 'lucide-react'
 import Image from 'next/image'
 import toast from 'react-hot-toast'
@@ -15,6 +15,18 @@ export default function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps)
   const [fullName, setFullName] = useState('')
   const [userType, setUserType] = useState<'Neighbor' | 'Teenlancer' | 'Parent of Teenlancer' | ''>('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isOpen])
 
   const handleClose = () => {
     sessionStorage.setItem('prelaunch-modal-seen', 'true')
@@ -83,59 +95,59 @@ export default function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps)
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity"
+        className="fixed inset-0 bg-black bg-opacity-50 z-40 animate-fade-in"
         onClick={handleClose}
       />
       
       {/* Modal */}
-      <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full animate-slide-up" style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05)' }}>
-          <div className="p-8 relative">
+      <div className="fixed inset-0 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
+        <div className="bg-white rounded-t-2xl sm:rounded-lg shadow-2xl w-full sm:max-w-lg md:max-w-2xl max-h-[90vh] sm:max-h-[85vh] sm:overflow-hidden overflow-y-auto animate-fade-in" style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05)' }}>
+          <div className="p-4 sm:p-6 md:p-8 relative">
             {/* Close Button */}
             <button
               onClick={handleClose}
-              className="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition-colors z-10"
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 text-gray-400 hover:text-gray-600 transition-colors z-10"
               aria-label="Close modal"
             >
-              <X size={24} />
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
 
             {/* Logo */}
-            <div className="mb-6 flex justify-center">
+            <div className="mb-4 sm:mb-6 flex justify-center">
               <Image
                 src="/logo_dk.png"
                 alt="Ollie Logo"
                 width={120}
                 height={40}
-                className="h-auto w-auto object-contain"
+                className="h-8 sm:h-10 w-auto object-contain"
               />
             </div>
 
             {/* Header */}
-            <h2 className="text-3xl font-bold text-brand-dark text-center mb-6">We&apos;re Launching Ollie Soon!</h2>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-brand-dark text-center mb-4 sm:mb-6">We&apos;re Launching Ollie Soon!</h2>
 
             {/* Subtitle */}
-            <p className="text-xl font-semibold text-brand-dark mb-3">
+            <p className="text-base sm:text-lg md:text-xl font-semibold text-brand-dark mb-2 sm:mb-3">
               Help teens earn. Get local help. Build community.
             </p>
 
             {/* Description */}
-            <p className="text-text-gray-light mb-6">
+            <p className="text-sm sm:text-base text-text-gray-light mb-4 sm:mb-6">
               Ollie connects teens (14-19) with neighbors who need help with everyday tasks, all with complete parental oversight.
             </p>
 
-            <p className="text-gray-600 font-medium mb-4">
+            <p className="text-sm sm:text-base text-gray-600 font-medium mb-3 sm:mb-4">
               Join our pre-launch community and be among the first to experience the new neighborhood economy.
             </p>
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-4 mb-6" noValidate>
+            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4 mb-4 sm:mb-6" noValidate>
               <input
                 type="text"
                 id="prelaunch-full-name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="w-full px-4 py-3 border border-border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent text-brand-dark"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent text-brand-dark"
                 placeholder="Enter your full name *"
                 required
                 aria-label="Full name"
@@ -147,7 +159,7 @@ export default function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps)
                 id="prelaunch-email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent text-brand-dark"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent text-brand-dark"
                 placeholder="Enter your email *"
                 required
                 aria-label="Email"
@@ -158,7 +170,7 @@ export default function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps)
                 id="prelaunch-user-type"
                 value={userType}
                 onChange={(e) => setUserType(e.target.value as 'Neighbor' | 'Teenlancer' | 'Parent of Teenlancer' | '')}
-                className={`w-full px-4 py-3 border border-border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent bg-white hover:bg-gray-50 ${
+                className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-border-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent bg-white hover:bg-gray-50 ${
                   userType ? 'text-brand-dark' : 'text-gray-400'
                 }`}
                 style={{
@@ -175,21 +187,21 @@ export default function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps)
               </select>
 
               {/* Benefits */}
-              <div className="space-y-2 py-4">
-                <div className="flex items-center text-text-gray-light">
-                  <span className="text-brand-green mr-3 font-bold">✓</span>
+              <div className="space-y-1.5 sm:space-y-2 py-3 sm:py-4">
+                <div className="flex items-center text-xs sm:text-sm text-text-gray-light">
+                  <span className="text-brand-green mr-2 sm:mr-3 font-bold">✓</span>
                   <span>All teens parent-verified</span>
                 </div>
-                <div className="flex items-center text-text-gray-light">
-                  <span className="text-brand-green mr-3 font-bold">✓</span>
+                <div className="flex items-center text-xs sm:text-sm text-text-gray-light">
+                  <span className="text-brand-green mr-2 sm:mr-3 font-bold">✓</span>
                   <span>Complete parental oversight</span>
                 </div>
-                <div className="flex items-center text-text-gray-light">
-                  <span className="text-brand-green mr-3 font-bold">✓</span>
+                <div className="flex items-center text-xs sm:text-sm text-text-gray-light">
+                  <span className="text-brand-green mr-2 sm:mr-3 font-bold">✓</span>
                   <span>Tasks within your neighborhood</span>
                 </div>
-                <div className="flex items-center text-text-gray-light">
-                  <span className="text-brand-green mr-3 font-bold">✓</span>
+                <div className="flex items-center text-xs sm:text-sm text-text-gray-light">
+                  <span className="text-brand-green mr-2 sm:mr-3 font-bold">✓</span>
                   <span>Safe messaging & payments</span>
                 </div>
               </div>
@@ -197,12 +209,12 @@ export default function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps)
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-transparent border-2 border-brand-green text-brand-green py-3 px-6 rounded-lg font-semibold hover:bg-brand-green hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-transparent border-2 border-brand-green text-brand-green py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg text-sm sm:text-base font-semibold hover:bg-brand-green hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   <>
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    Joining...
+                    <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-brand-green border-t-transparent rounded-full animate-spin" />
+                    <span>Joining...</span>
                   </>
                 ) : (
                   'Get Notified'
@@ -211,7 +223,7 @@ export default function PreLaunchModal({ isOpen, onClose }: PreLaunchModalProps)
             </form>
 
             {/* Footer */}
-            <p className="text-center text-text-gray-light text-sm">
+            <p className="text-center text-xs sm:text-sm text-text-gray-light">
               Launching February 2025 • Built by a local parent for local families
             </p>
           </div>
