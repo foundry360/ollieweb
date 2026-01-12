@@ -91,6 +91,7 @@ export async function POST(request: NextRequest) {
           email: data.session.user.email || email,
           ip_address: clientIP,
           user_agent: userAgent,
+          platform: 'web',
         })
     } catch (logError) {
       // Don't fail login if logging fails, just log the error

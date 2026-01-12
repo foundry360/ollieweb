@@ -3,6 +3,7 @@ import { Open_Sans } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
 import { QueryClientProvider } from './providers'
+import { Analytics } from '@vercel/analytics/react'
 
 const openSans = Open_Sans({ subsets: ['latin'] })
 
@@ -35,6 +36,7 @@ export default function RootLayout({
               },
             }}
           />
+          <Analytics />
         </QueryClientProvider>
       </body>
     </html>

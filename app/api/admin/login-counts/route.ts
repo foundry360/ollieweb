@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
     
     const { searchParams } = new URL(request.url)
     const days = parseInt(searchParams.get('days') || '90')
+    const platform = searchParams.get('platform') // Optional: 'web', 'mobile_ios', 'mobile_android', 'mobile'
     
     // Determine grouping based on days
     const useDailyGrouping = days <= 30
@@ -19,12 +20,22 @@ export async function GET(request: NextRequest) {
     startDate.setDate(startDate.getDate() - days)
     startDate.setHours(0, 0, 0, 0)
     
-    // Fetch all login events in the specified period
-    const { data: logins, error } = await adminClient
+    // Build query with optional platform filter
+    let query = adminClient
       .from('login_events')
-      .select('created_at')
+      .select('created_at, platform')
       .gte('created_at', startDate.toISOString())
-      .order('created_at', { ascending: true })
+    
+    // Filter by platform if specified
+    if (platform) {
+      query = query.eq('platform', platform)
+    }
+    
+    // Add ordering
+    query = query.order('created_at', { ascending: true })
+    
+    // Fetch all login events in the specified period
+    const { data: logins, error } = await query
     
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })
@@ -56,6 +67,22 @@ export async function GET(request: NextRequest) {
         }
       })
       
+      // Calculate platform breakdown for each day
+      const platformBreakdown: Record<string, Record<string, number>> = {}
+      logins?.forEach((login: any) => {
+        if (login.created_at) {
+          const loginDate = new Date(login.created_at)
+          loginDate.setHours(0, 0, 0, 0)
+          const dateKey = loginDate.toISOString().split('T')[0]
+          const loginPlatform = login.platform || 'unknown'
+          
+          if (!platformBreakdown[dateKey]) {
+            platformBreakdown[dateKey] = {}
+          }
+          platformBreakdown[dateKey][loginPlatform] = (platformBreakdown[dateKey][loginPlatform] || 0) + 1
+        }
+      })
+      
       chartData = Object.entries(loginsByDay)
         .map(([date, count]) => ({
           date,
@@ -63,6 +90,7 @@ export async function GET(request: NextRequest) {
           day: new Date(date).getDate(),
           month: new Date(date).getMonth() + 1,
           year: new Date(date).getFullYear(),
+          platforms: platformBreakdown[date] || {},
         }))
         .sort((a, b) => a.date.localeCompare(b.date))
     } else {
@@ -92,6 +120,21 @@ export async function GET(request: NextRequest) {
         }
       })
       
+      // Calculate platform breakdown for each month
+      const platformBreakdown: Record<string, Record<string, number>> = {}
+      logins?.forEach((login: any) => {
+        if (login.created_at) {
+          const loginDate = new Date(login.created_at)
+          const monthKey = `${loginDate.getFullYear()}-${String(loginDate.getMonth() + 1).padStart(2, '0')}`
+          const loginPlatform = login.platform || 'unknown'
+          
+          if (!platformBreakdown[monthKey]) {
+            platformBreakdown[monthKey] = {}
+          }
+          platformBreakdown[monthKey][loginPlatform] = (platformBreakdown[monthKey][loginPlatform] || 0) + 1
+        }
+      })
+      
       chartData = Object.entries(loginsByMonth)
         .map(([monthKey, monthData]) => ({
           monthKey,
@@ -99,6 +142,7 @@ export async function GET(request: NextRequest) {
           count: monthData.count,
           month: monthData.month,
           year: monthData.year,
+          platforms: platformBreakdown[monthKey] || {},
         }))
         .sort((a, b) => a.monthKey.localeCompare(b.monthKey))
     }

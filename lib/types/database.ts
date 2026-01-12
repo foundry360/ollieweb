@@ -148,3 +148,15 @@ export interface PreLaunchLead {
   created_at: string
 }
 
+export type LoginPlatform = 'web' | 'mobile_ios' | 'mobile_android' | 'mobile'
+
+export interface LoginEvent {
+  id: string
+  user_id: string
+  email: string
+  platform: LoginPlatform | null
+  ip_address: string | null
+  user_agent: string | null
+  created_at: string
+}
+
