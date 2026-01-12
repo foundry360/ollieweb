@@ -69,7 +69,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header/Navigation */}
-      <header className="bg-brand-dark text-white">
+      <header className="bg-brand-dark text-white sticky top-0 z-50">
         <nav className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center">
@@ -84,17 +84,14 @@ export default function LandingPage() {
             
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <Link href="#features" className="text-white hover:text-brand-green transition-colors">
-                Features
-              </Link>
-              <Link href="#how-it-works" className="text-white hover:text-brand-green transition-colors">
-                How It Works
-              </Link>
               <Link href="/teenlancers" className="text-white hover:text-brand-green transition-colors">
                 For Teenlancers
               </Link>
               <Link href="/neighbors" className="text-white hover:text-brand-green transition-colors">
                 For Neighbors
+              </Link>
+              <Link href="/community" className="text-white hover:text-brand-green transition-colors">
+                Community
               </Link>
               <Link href="/login" className="text-white hover:text-brand-green transition-colors">
                 Login
@@ -106,7 +103,7 @@ export default function LandingPage() {
                 }}
                 className="bg-transparent border border-white text-white px-4 py-2 rounded-lg hover:bg-white hover:text-brand-dark transition-colors"
               >
-                Notify Me
+                Get Notified
               </button>
             </div>
 
@@ -124,20 +121,6 @@ export default function LandingPage() {
           {mobileMenuOpen && (
             <div className="md:hidden mt-4 pb-4 space-y-4">
               <Link 
-                href="#features" 
-                className="block text-white hover:text-brand-green transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Features
-              </Link>
-              <Link 
-                href="#how-it-works" 
-                className="block text-white hover:text-brand-green transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                How It Works
-              </Link>
-              <Link 
                 href="/teenlancers" 
                 className="block text-white hover:text-brand-green transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
@@ -150,6 +133,13 @@ export default function LandingPage() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 For Neighbors
+              </Link>
+              <Link 
+                href="/community" 
+                className="block text-white hover:text-brand-green transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Community
               </Link>
               <Link 
                 href="/login" 
@@ -166,7 +156,7 @@ export default function LandingPage() {
                 }}
                 className="w-full bg-transparent border border-white text-white px-4 py-2 rounded-lg hover:bg-white hover:text-brand-dark transition-colors text-center"
               >
-                Notify Me
+                Get Notified
               </button>
             </div>
           )}
@@ -241,7 +231,7 @@ export default function LandingPage() {
                   <Briefcase className="text-brand-green" size={24} />
                 </div>
                 <h3 className="text-xl font-semibold text-brand-dark mb-3">For Teenlancers</h3>
-                <p className="text-text-gray-light flex-grow">
+                <p className="text-sm text-text-gray-light flex-grow">
                   Browse gigs, earn money, and build valuable skills in your community. Perfect for teenlancers looking for flexible work opportunities.
                 </p>
               </div>
@@ -254,7 +244,7 @@ export default function LandingPage() {
                   <Users className="text-brand-green" size={24} />
                 </div>
                 <h3 className="text-xl font-semibold text-brand-dark mb-3">For Neighbors</h3>
-                <p className="text-text-gray-light flex-grow">
+                <p className="text-sm text-text-gray-light flex-grow">
                   Post tasks, find reliable help, and support teenlancers in your community. Get things done while making a difference.
                 </p>
               </div>
@@ -267,7 +257,7 @@ export default function LandingPage() {
                   <Shield className="text-brand-green" size={24} />
                 </div>
                 <h3 className="text-xl font-semibold text-brand-dark mb-3">Safe & Verified</h3>
-                <p className="text-text-gray-light flex-grow">
+                <p className="text-sm text-text-gray-light flex-grow">
                   Parent approval, verified users, and secure payments. Your safety and peace of mind are our top priorities.
                 </p>
               </div>
@@ -280,7 +270,7 @@ export default function LandingPage() {
                   <Heart className="text-brand-green" size={24} />
                 </div>
                 <h3 className="text-xl font-semibold text-brand-dark mb-3">Community Powered</h3>
-                <p className="text-text-gray-light flex-grow">
+                <p className="text-sm text-text-gray-light flex-grow">
                   Local connections and a trusted network. Build relationships while accomplishing tasks in your neighborhood.
                 </p>
               </div>
@@ -380,91 +370,157 @@ export default function LandingPage() {
       {/* Testimonials Section */}
       <section className="py-20 px-6 bg-brand-dark">
         <div className="container mx-auto max-w-6xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-12">
-            What Our Community Says
+          <h2 className="text-2xl md:text-3xl font-bold text-left text-white mb-12">
+            See what other community members are saying about Ollie
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Testimonial 1 - Teen */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Parent 1 - Sarah M. */}
             <div className="bg-gray-50 p-3 rounded-lg shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
               <div className="border border-brand-green rounded-lg p-4 h-full flex flex-col">
-                <div className="flex items-center mb-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 bg-brand-green rounded-full flex items-center justify-center text-white font-bold mr-3">
+                      S
+                    </div>
+                    <div>
+                      <p className="font-semibold text-brand-dark">Sarah M.</p>
+                      <p className="text-sm text-text-gray-light">Mother of Two Teens</p>
+                    </div>
+                  </div>
                   <div className="flex text-accent-amber">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} size={16} className="fill-current" />
                     ))}
                   </div>
                 </div>
-                <p className="text-text-gray-light mb-4 flex-grow">
-                  &quot;I&apos;ve earned over $500 in just a few months doing local gigs. The best part is working in my neighborhood and building connections!&quot;
+                <p className="text-sm text-text-gray-light flex-grow">
+                  &quot;When I heard about the Ollie concept, I immediately saw the potential. My teenagers need ways to earn money, but I worry about them finding work through random posts. A verified platform where they can build reputation while learning responsibility is exactly what we need.&quot;
                 </p>
-                <div className="flex items-center">
-                  <div className="w-10 h-10 bg-brand-green rounded-full flex items-center justify-center text-white font-bold mr-3">
-                    A
-                  </div>
-                  <div>
-                    <p className="font-semibold text-brand-dark">Alex, 16</p>
-                    <div className="flex items-center text-accent-orange text-sm">
-                      <CheckCircle size={14} className="mr-1" />
-                      <span>Verified Teenlancer</span>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
 
-            {/* Testimonial 2 - Neighbor */}
+            {/* Parent 2 - Marcus T. */}
             <div className="bg-gray-50 p-3 rounded-lg shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
               <div className="border border-brand-green rounded-lg p-4 h-full flex flex-col">
-                <div className="flex items-center mb-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 bg-brand-green rounded-full flex items-center justify-center text-white font-bold mr-3">
+                      M
+                    </div>
+                    <div>
+                      <p className="font-semibold text-brand-dark">Marcus T.</p>
+                      <p className="text-sm text-text-gray-light">Father of Three</p>
+                    </div>
+                  </div>
                   <div className="flex text-accent-amber">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} size={16} className="fill-current" />
                     ))}
                   </div>
                 </div>
-                <p className="text-text-gray-light mb-4 flex-grow">
-                  &quot;Finding reliable help for yard work and errands has never been easier. The teens are responsible and the parent verification gives me peace of mind.&quot;
+                <p className="text-sm text-text-gray-light flex-grow">
+                  &quot;I&apos;m constantly trying to teach my kids the value of hard work, but opportunities are limited. The Ollie concept addresses both sides - my 15-year-old could earn money, and I could hire responsible teens. The verification and rating system gives me peace of mind.&quot;
                 </p>
-                <div className="flex items-center">
-                  <div className="w-10 h-10 bg-brand-green rounded-full flex items-center justify-center text-white font-bold mr-3">
-                    S
-                  </div>
-                  <div>
-                    <p className="font-semibold text-brand-dark">Sarah M.</p>
-                    <div className="flex items-center text-accent-orange text-sm">
-                      <CheckCircle size={14} className="mr-1" />
-                      <span>Verified Neighbor</span>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
 
-            {/* Testimonial 3 - Parent */}
+            {/* Neighbor 1 - Linda R. */}
             <div className="bg-gray-50 p-3 rounded-lg shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
               <div className="border border-brand-green rounded-lg p-4 h-full flex flex-col">
-                <div className="flex items-center mb-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 bg-brand-green rounded-full flex items-center justify-center text-white font-bold mr-3">
+                      L
+                    </div>
+                    <div>
+                      <p className="font-semibold text-brand-dark">Linda R.</p>
+                      <p className="text-sm text-text-gray-light">Retired Teacher</p>
+                    </div>
+                  </div>
                   <div className="flex text-accent-amber">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} size={16} className="fill-current" />
                     ))}
                   </div>
                 </div>
-                <p className="text-text-gray-light mb-4 flex-grow">
-                  &quot;As a parent, I love that I can approve gigs and track my teen&apos;s work. It&apos;s safe, local, and teaches valuable life skills.&quot;
+                <p className="text-sm text-text-gray-light flex-grow">
+                  &quot;When I learned about Ollie, I was thrilled. I can&apos;t afford traditional lawn services but struggle to keep up with my yard. Hiring a responsible neighborhood teen at a fair price while they build work experience feels like a win-win.&quot;
                 </p>
-                <div className="flex items-center">
-                  <div className="w-10 h-10 bg-brand-green rounded-full flex items-center justify-center text-white font-bold mr-3">
-                    M
-                  </div>
-                  <div>
-                    <p className="font-semibold text-brand-dark">Mike T.</p>
-                    <div className="flex items-center text-accent-orange text-sm">
-                      <CheckCircle size={14} className="mr-1" />
-                      <span>Verified Parent</span>
+              </div>
+            </div>
+
+            {/* Neighbor 2 - David C. */}
+            <div className="bg-gray-50 p-3 rounded-lg shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
+              <div className="border border-brand-green rounded-lg p-4 h-full flex flex-col">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 bg-brand-green rounded-full flex items-center justify-center text-white font-bold mr-3">
+                      D
+                    </div>
+                    <div>
+                      <p className="font-semibold text-brand-dark">David C.</p>
+                      <p className="text-sm text-text-gray-light">Working Professional</p>
                     </div>
                   </div>
+                  <div className="flex text-accent-amber">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={16} className="fill-current" />
+                    ))}
+                  </div>
                 </div>
+                <p className="text-sm text-text-gray-light flex-grow">
+                  &quot;When I heard about Ollie, my first thought was &apos;where was this when I was a teenager?&apos; I travel for work and need help with dog walking and home maintenance. A trusted neighborhood marketplace with verified local teens is brilliant and solves a real problem.&quot;
+                </p>
+              </div>
+            </div>
+
+            {/* Teenlancer 1 - Emma R. */}
+            <div className="bg-gray-50 p-3 rounded-lg shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
+              <div className="border border-brand-green rounded-lg p-4 h-full flex flex-col">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 bg-brand-green rounded-full flex items-center justify-center text-white font-bold mr-3">
+                      E
+                    </div>
+                    <div>
+                      <p className="font-semibold text-brand-dark">Emma R.</p>
+                      <p className="text-sm text-text-gray-light">High School Junior</p>
+                    </div>
+                  </div>
+                  <div className="flex text-accent-amber">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={16} className="fill-current" />
+                    ))}
+                  </div>
+                </div>
+                <p className="text-sm text-text-gray-light flex-grow">
+                  &quot;I got so excited when I heard about the Ollie concept. I&apos;ve been babysitting for family friends, but it&apos;s hard to find new clients. Having a profile to showcase skills and build references would make me feel more professional and confident to grow my business.&quot;
+                </p>
+              </div>
+            </div>
+
+            {/* Teenlancer 2 - Tyler J. */}
+            <div className="bg-gray-50 p-3 rounded-lg shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
+              <div className="border border-brand-green rounded-lg p-4 h-full flex flex-col">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 bg-brand-green rounded-full flex items-center justify-center text-white font-bold mr-3">
+                      T
+                    </div>
+                    <div>
+                      <p className="font-semibold text-brand-dark">Tyler J.</p>
+                      <p className="text-sm text-text-gray-light">High School Sophomore</p>
+                    </div>
+                  </div>
+                  <div className="flex text-accent-amber">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={16} className="fill-current" />
+                    ))}
+                  </div>
+                </div>
+                <p className="text-sm text-text-gray-light flex-grow">
+                  &quot;Ollie sounds way better than asking neighbors randomly if they need help. I like yard work but never know how to let people know I&apos;m available or what to charge. A platform that helps me set rates, get reviews, and find clients would feel more legit.&quot;
+                </p>
               </div>
             </div>
           </div>
@@ -915,7 +971,7 @@ export default function LandingPage() {
             }}
             className="inline-block bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-brand-green transition-all transform hover:scale-105 text-lg font-semibold"
           >
-            Notify Me
+            Get Notified
           </button>
         </div>
       </section>
