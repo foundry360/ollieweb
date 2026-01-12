@@ -76,25 +76,25 @@ function LoginForm() {
         }}></div>
       </div>
       
-      <div className="max-w-md w-full space-y-8 p-8 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-white/10 relative z-10">
+      <div className="max-w-md w-full space-y-6 sm:space-y-8 p-6 sm:p-8 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-white/10 relative z-10 mx-4">
         <div>
-          <div className="flex justify-center mb-6 opacity-90">
+          <div className="flex justify-center mb-4 sm:mb-6 opacity-90">
             <Image
               src="/logo_dk.png"
               alt="Ollie Logo"
               width={140}
               height={44}
-              className="h-11 w-auto object-contain"
+              className="h-10 sm:h-11 w-auto object-contain"
             />
           </div>
-          <h2 className="text-center text-3xl font-semibold text-gray-800">
+          <h2 className="text-center text-2xl sm:text-3xl font-semibold text-gray-800">
             Welcome to Ollie!
           </h2>
           <p className="mt-2 text-center text-sm text-gray-500">
             Sign in to your admin account
           </p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-6 sm:mt-8 space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="email" className="sr-only">
               Email address
@@ -161,7 +161,7 @@ export default function LoginPage() {
             backgroundSize: '40px 40px'
           }}></div>
         </div>
-        <div className="max-w-md w-full space-y-8 p-8 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-white/10 relative z-10">
+        <div className="max-w-md w-full space-y-8 p-6 sm:p-8 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-white/10 relative z-10 mx-4">
           <div className="flex justify-center">
             <div className="text-gray-400">Loading...</div>
           </div>

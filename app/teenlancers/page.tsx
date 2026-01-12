@@ -178,7 +178,7 @@ export default function TeenlancersPage() {
                 alt="Download on the App Store"
                 width={150}
                 height={50}
-                className="h-auto w-auto object-contain max-w-[150px]"
+                className="h-auto w-auto object-contain max-w-[120px] sm:max-w-[150px]"
               />
             </button>
             {/* Google Play badge */}
@@ -195,7 +195,7 @@ export default function TeenlancersPage() {
                 alt="Get it on Google Play"
                 width={150}
                 height={50}
-                className="h-auto w-auto object-contain max-w-[150px]"
+                className="h-auto w-auto object-contain max-w-[120px] sm:max-w-[150px]"
               />
             </button>
           </div>
@@ -347,7 +347,7 @@ export default function TeenlancersPage() {
           <p className="text-center text-text-gray-light text-lg mb-12">
             Browse the most popular gig types and see what matches your skills and interests.
           </p>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-8">
             <div className="text-center">
               <div className="flex justify-center mb-3">
                 <Sprout className="text-brand-green" size={32} />
@@ -524,20 +524,20 @@ export default function TeenlancersPage() {
       {showBackToTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 bg-brand-green text-white p-4 rounded-full shadow-lg hover:bg-opacity-90 transition-all transform hover:scale-110 z-50"
+          className="fixed bottom-20 sm:bottom-8 right-4 sm:right-8 bg-brand-green text-white p-3 sm:p-4 rounded-full shadow-lg hover:bg-opacity-90 transition-all transform hover:scale-110 z-50"
           aria-label="Back to top"
         >
-          <ArrowUp size={24} />
+          <ArrowUp size={20} className="sm:w-6 sm:h-6" />
         </button>
       )}
 
       {/* Have a Question Button */}
       <button
         onClick={() => setIsContactModalOpen(true)}
-        className="fixed bottom-8 left-8 bg-brand-green text-white px-6 py-4 rounded-full shadow-lg hover:bg-opacity-90 transition-all transform hover:scale-105 z-50 flex items-center gap-2 font-semibold"
+        className="fixed bottom-4 sm:bottom-8 left-4 sm:left-8 bg-brand-green text-white px-4 sm:px-6 py-3 sm:py-4 rounded-full shadow-lg hover:bg-opacity-90 transition-all transform hover:scale-105 z-50 flex items-center gap-2 font-semibold text-sm sm:text-base"
         aria-label="Have a question?"
       >
-        <HelpCircle size={20} />
+        <HelpCircle size={18} className="sm:w-5 sm:h-5" />
         <span className="hidden sm:inline">Have a Question?</span>
       </button>
 

@@ -72,22 +72,23 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       />
       
       {/* Modal */}
-      <div className="fixed bottom-4 left-4 md:left-4 md:bottom-4 w-[calc(100%-2rem)] md:w-full max-w-md bg-white rounded-lg shadow-2xl z-50 animate-slide-up">
-        <div className="p-6">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <Mail className="text-brand-green" size={24} />
-              <h2 className="text-2xl font-bold text-brand-dark">Have a Question?</h2>
+      <div className="fixed inset-0 flex items-end sm:items-center justify-center z-50 p-4 sm:p-0">
+        <div className="w-full sm:w-auto sm:max-w-md bg-white rounded-t-lg sm:rounded-lg shadow-2xl animate-slide-up max-h-[90vh] overflow-y-auto">
+          <div className="p-4 sm:p-6">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Mail className="text-brand-green w-5 h-5 sm:w-6 sm:h-6" />
+                <h2 className="text-xl sm:text-2xl font-bold text-brand-dark">Have a Question?</h2>
+              </div>
+              <button
+                onClick={onClose}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+                aria-label="Close modal"
+              >
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
+              </button>
             </div>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
-              aria-label="Close modal"
-            >
-              <X size={24} />
-            </button>
-          </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -154,6 +155,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               )}
             </button>
           </form>
+          </div>
         </div>
       </div>
     </>
