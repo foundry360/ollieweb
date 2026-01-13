@@ -191,3 +191,4 @@ CREATE INDEX IF NOT EXISTS idx_login_events_platform ON public.login_events(plat
 - IP address and user agent are optional but recommended for better analytics
 
 
+
