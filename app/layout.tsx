@@ -4,6 +4,7 @@ import './globals.css'
 import { Toaster } from 'react-hot-toast'
 import { QueryClientProvider } from './providers'
 import { Analytics } from '@vercel/analytics/react'
+import { GoogleAnalytics } from '@/components/GoogleAnalytics'
 
 const openSans = Open_Sans({ subsets: ['latin'] })
 
@@ -28,6 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={openSans.className}>
+        <GoogleAnalytics />
         <QueryClientProvider>
           {children}
           <Toaster 

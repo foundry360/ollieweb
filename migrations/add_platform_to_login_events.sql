@@ -11,3 +11,4 @@ SET platform = 'web'
 WHERE platform IS NULL;
 
 
+
